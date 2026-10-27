@@ -1,0 +1,1996 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta http-equiv="Content-Security-Policy" content="connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Procurement System Issue</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNyIgZmlsbD0iIzBiNWNhYiIvPjxwYXRoIGQ9Ik05IDhoMTBsNCA0djEySDl6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTE5IDh2NGg0IiBmaWxsPSIjYjlkNmYyIi8+PHBhdGggZD0iTTEyIDE2aDhNMTIgMjBoOCIgc3Ryb2tlPSIjMGI1Y2FiIiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+Cg==" type="image/svg+xml">
+<style>
+/* Procurement System Issue - styles (local, no external fonts) */
+:root {
+  --bg: #f1f4fa; --surface: #fff; --ink: #1c2733; --muted: #5b6878; --line: #dbe1e8;
+  --brand: #0f1f6e; --brand-dark: #0a1650; --brand-soft: #e8edfb;
+  --ok: #19713d; --ok-bg: #e3f4ea; --warn: #8a5a00; --warn-bg: #fff2d6;
+  --bad: #a4262c; --bad-bg: #fde7e9; --info-bg: #e6f0fa;
+  --radius: 8px; --shadow: 0 1px 2px rgba(16,24,40,.06), 0 1px 3px rgba(16,24,40,.08);
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.45; }
+[hidden] { display: none !important; }
+.skip-link { position: absolute; left: -999px; top: 0; background: #fff; padding: 8px; z-index: 100; }
+.skip-link:focus { left: 8px; top: 8px; }
+:focus-visible { outline: 3px solid #f5a623; outline-offset: 1px; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px 18px; margin-bottom: 16px; }
+.card h2 { margin: 0 0 12px; font-size: 15px; }
+.form-card { max-width: 980px; }
+
+label { font-weight: 600; font-size: 13px; display: block; margin-bottom: 4px; }
+.req { color: var(--bad); }
+input[type=text], input[type=number], input[type=date], input[type=search], select, textarea {
+  width: 100%; padding: 8px 10px; border: 1px solid #b8c2cf; border-radius: 6px; background: #fff; color: var(--ink); font: inherit;
+}
+textarea { resize: vertical; }
+input:disabled, select:disabled { background: #eef1f5; color: #7b8794; }
+.field { margin-bottom: 14px; }
+.field.invalid input, .field.invalid select, .field.invalid textarea { border-color: var(--bad); background: #fffafa; }
+.err { color: var(--bad); font-size: 12.5px; min-height: 0; margin-top: 3px; }
+.hint { color: var(--muted); font-size: 12px; margin-top: 3px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+
+.btn { border: 1px solid #aeb9c6; background: #fff; color: var(--ink); padding: 8px 14px; border-radius: 6px; cursor: pointer; font: inherit; font-weight: 600; }
+.btn:hover { background: #f1f4f8; }
+.btn:disabled { opacity: .55; cursor: not-allowed; }
+.btn-primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+.btn-primary:hover { background: var(--brand-dark); }
+.btn-danger { background: #fff; border-color: var(--bad); color: var(--bad); }
+.btn-danger:hover { background: var(--bad-bg); }
+.btn-ghost { border-color: transparent; background: transparent; }
+.btn-sm { padding: 4px 10px; font-size: 12.5px; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+.actions.end { justify-content: flex-end; }
+
+.alert { padding: 10px 14px; border-radius: 6px; margin-bottom: 12px; }
+.alert-success { background: var(--ok-bg); color: var(--ok); border: 1px solid #b6e0c6; }
+.alert-error { background: var(--bad-bg); color: var(--bad); border: 1px solid #f1b8bd; }
+.alert-info { background: var(--info-bg); color: var(--brand-dark); border: 1px solid #b9d6f2; }
+
+/* file picker */
+.drop { border: 2px dashed #a9b6c6; border-radius: 8px; padding: 14px; background: #fafcfe; }
+.drop.over { border-color: var(--brand); background: var(--brand-soft); }
+.file-list { list-style: none; margin: 10px 0 0; padding: 0; }
+.file-list li { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; margin-bottom: 6px; background: #fff; }
+.file-list .fname { word-break: break-all; }
+.file-list .fsize { color: var(--muted); font-size: 12px; white-space: nowrap; margin-left: 8px; }
+
+/* toolbar + tables */
+.toolbar { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; align-items: end; }
+.toolbar .wide { grid-column: span 2; }
+.toolbar label { font-size: 12px; color: var(--muted); font-weight: 600; }
+.toolbar-actions { display: flex; gap: 8px; align-items: end; flex-wrap: wrap; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; margin-top: 12px; }
+table.data { width: 100%; border-collapse: collapse; min-width: 900px; }
+table.data th, table.data td { padding: 9px 10px; text-align: left; border-bottom: 1px solid #edf0f4; vertical-align: top; }
+table.data th { background: #f6f8fb; font-size: 12px; text-transform: uppercase; letter-spacing: .02em; color: var(--muted); white-space: nowrap; position: sticky; top: 0; }
+table.data th button { all: unset; cursor: pointer; font: inherit; text-transform: inherit; letter-spacing: inherit; }
+table.data th button:focus-visible { outline: 3px solid #f5a623; }
+table.data th[aria-sort="ascending"] button::after { content: " \25B2"; }
+table.data th[aria-sort="descending"] button::after { content: " \25BC"; }
+table.data tbody tr:hover { background: #f8fbff; }
+table.data .id { font-weight: 600; white-space: nowrap; color: var(--brand-dark); }
+table.data .subject { min-width: 200px; max-width: 320px; word-break: break-word; }
+.empty, .loading { padding: 30px; text-align: center; color: var(--muted); }
+.pager { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; color: var(--muted); }
+.pager .pg { display: flex; gap: 6px; align-items: center; }
+.pager select { width: auto; }
+
+/* badges */
+.badge { display: inline-block; padding: 2px 9px; border-radius: 12px; font-size: 12px; font-weight: 600; white-space: nowrap; border: 1px solid transparent; }
+.kind-new { background: #e1edfb; color: #0b4a8f; border-color: #bcd6f3; }
+.kind-progress { background: #fff2d6; color: #7a4f00; border-color: #f0d9a0; }
+.kind-pending { background: #f1e6fa; color: #5b2a86; border-color: #dcc6ef; }
+.kind-resolved { background: #e3f4ea; color: #19713d; border-color: #b6e0c6; }
+.kind-closed { background: #e8ebef; color: #46515e; border-color: #ccd3db; }
+.kind-rejected { background: #fde7e9; color: #a4262c; border-color: #f1b8bd; }
+.pr-0 { background: #eef1f5; color: #46515e; border-color: #d3dae2; }
+.pr-1 { background: #e1edfb; color: #0b4a8f; border-color: #bcd6f3; }
+.pr-2 { background: #ffe9cc; color: #8a4b00; border-color: #f4cf9c; }
+.pr-3 { background: #fde7e9; color: #a4262c; border-color: #f1b8bd; }
+.tag-overdue { display: inline-block; margin-top: 3px; font-size: 11px; color: var(--bad); font-weight: 700; }
+.inactive { opacity: .6; }
+
+/* dialog */
+dialog.dlg { border: none; border-radius: 10px; padding: 0; width: min(980px, 96vw); max-height: 92vh; box-shadow: 0 10px 40px rgba(0,0,0,.35); color: var(--ink); }
+dialog.dlg-small { width: min(460px, 94vw); padding: 20px; }
+dialog::backdrop { background: rgba(10,25,45,.55); }
+.dlg-head { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: #fff; z-index: 2; }
+.dlg-head h2 { margin: 0; font-size: 17px; }
+.dlg-body { padding: 16px 20px 20px; overflow: auto; max-height: calc(92vh - 62px); }
+.kv { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 16px; margin-bottom: 14px; }
+.kv dt { font-size: 11.5px; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.kv dd { margin: 0; word-break: break-word; }
+.detail-text { white-space: pre-wrap; background: #f8fafc; border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; word-break: break-word; }
+h3.sec { font-size: 14px; margin: 18px 0 8px; border-bottom: 1px solid var(--line); padding-bottom: 4px; }
+.timeline { list-style: none; margin: 0; padding: 0; }
+.timeline li { padding: 8px 10px 8px 14px; border-left: 3px solid var(--brand); background: #f8fafc; margin-bottom: 8px; border-radius: 0 6px 6px 0; }
+.timeline li.internal { border-left-color: #8a5a00; background: #fffaf0; }
+.timeline .meta { font-size: 12px; color: var(--muted); }
+.timeline .txt { white-space: pre-wrap; word-break: break-word; }
+.att-list { list-style: none; margin: 0; padding: 0; }
+.att-list li { display: flex; gap: 10px; align-items: center; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #edf0f4; }
+
+/* tabs */
+.tabs { display: flex; gap: 4px; flex-wrap: wrap; border-bottom: 2px solid var(--line); margin-bottom: 14px; }
+.tabs button { border: none; background: none; padding: 9px 14px; font: inherit; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+.tabs button[aria-selected="true"] { color: var(--brand); border-bottom-color: var(--brand); }
+.row-actions { display: flex; gap: 6px; }
+.inline-check { display: inline-flex; align-items: center; gap: 6px; font-weight: 400; margin-right: 12px; }
+.inline-check input { width: auto; }
+
+/* report */
+.kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin: 14px 0; }
+.kpi { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; box-shadow: var(--shadow); border-top: 3px solid var(--brand); }
+.kpi .v { font-size: 26px; font-weight: 700; }
+.kpi .l { color: var(--muted); font-size: 12px; font-weight: 600; text-transform: uppercase; }
+.kpi.bad { border-top-color: var(--bad); }
+.kpi.ok { border-top-color: var(--ok); }
+.charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.charts .card { margin: 0; }
+.charts .full { grid-column: 1 / -1; }
+.hbar { display: grid; grid-template-columns: minmax(80px, 38%) 1fr 40px; gap: 8px; align-items: center; margin-bottom: 6px; font-size: 13px; }
+.hbar .lab { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hbar .track, .hbar .fill { display: block; }
+.hbar .track { background: #edf1f6; border-radius: 4px; height: 14px; overflow: hidden; }
+.hbar .fill { height: 100%; background: var(--brand); border-radius: 4px; }
+.hbar .num { text-align: right; font-weight: 600; }
+svg.chart { width: 100%; height: auto; display: block; }
+svg.chart text { font-size: 11px; fill: #5b6878; }
+.legend { display: flex; gap: 14px; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; }
+
+#toasts { position: fixed; right: 16px; bottom: 16px; display: flex; flex-direction: column; gap: 8px; z-index: 1000; }
+.toast { background: #1c2733; color: #fff; padding: 10px 14px; border-radius: 6px; box-shadow: 0 4px 16px rgba(0,0,0,.3); max-width: 380px; }
+.toast.ok { background: var(--ok); } .toast.err { background: var(--bad); }
+
+/* ---- layout following the reference: gradient header, pill tabs, navy hero panel ---- */
+body { font-family: "Noto Sans Thai", "Leelawadee UI", "Segoe UI", Tahoma, system-ui, sans-serif; }
+.site-head { background: linear-gradient(100deg, #0a1450 0%, #0f2380 55%, #1636a8 100%); color: #fff; }
+.site-head-in { max-width: 1480px; margin: 0 auto; padding: 18px 32px; display: flex; align-items: center; gap: 16px; }
+.logo { border-radius: 12px; box-shadow: 0 4px 14px rgba(0,0,0,.3); flex: 0 0 auto; }
+.site-title { flex: 1; min-width: 0; }
+.site-title h1 { margin: 0; font-size: 28px; line-height: 1.15; letter-spacing: -.01em; }
+.site-title p { margin: 4px 0 0; color: #c7d3f5; font-size: 15px; }
+.head-right { display: flex; align-items: center; gap: 8px; }
+.head-right label { color: #b9c8f2; font-size: 12px; font-weight: 400; margin: 0; }
+.head-right input { width: 170px; background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.3); color: #fff; }
+.head-right input:focus-visible { background: #fff; color: var(--ink); }
+
+.tabbar { background: #fff; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 20; box-shadow: 0 2px 8px rgba(16,24,40,.05); }
+.tabbar-in { max-width: 1480px; margin: 0 auto; padding: 12px 32px; display: flex; gap: 12px; flex-wrap: wrap; }
+.tabbar a { display: inline-flex; align-items: center; gap: 10px; padding: 11px 20px; border-radius: 12px; background: #f1f3f8; border: 1px solid #e3e7ef; color: #1c2a63; font-weight: 600; font-size: 16px; text-decoration: none; transition: background .15s, box-shadow .15s; }
+.tabbar a:hover { background: #e7ebf5; }
+.tabbar a.active { background: #0f1f6e; border-color: #0f1f6e; color: #fff; box-shadow: 0 0 0 3px #bcc8f3, 0 6px 16px rgba(15,31,110,.35); }
+.tabbar svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 20px; }
+.count { background: #ffe9a8; color: #6b4a00; border-radius: 999px; padding: 1px 10px; font-size: 13px; }
+
+.wrap { max-width: 1480px; margin: 0 auto; padding: 20px 32px 48px; }
+.privacy-banner { border: 1px solid #f0d9a0; border-radius: 10px; margin-bottom: 16px; padding: 8px 14px; }
+.hero { background: linear-gradient(120deg, #0c1b63, #12297f); color: #fff; border-radius: 22px; padding: 24px 32px 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(12,27,99,.28); }
+.hero-top { display: flex; gap: 18px; align-items: center; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,.15); }
+.hero-icon { width: 72px; height: 72px; border-radius: 18px; background: linear-gradient(135deg, #1d8fe5, #0a5bd0); display: grid; place-items: center; flex: 0 0 72px; }
+.hero h2 { margin: 0; font-size: 26px; }
+.hero p { margin: 4px 0 0; color: #c7d3f5; font-size: 15px; }
+.hero-chips { display: flex; flex-wrap: wrap; gap: 8px 26px; align-items: center; padding-top: 14px; font-size: 15px; }
+.chip { display: inline-flex; align-items: center; gap: 8px; color: #dbe5ff; }
+.chip b { color: #fff; font-family: Consolas, "Courier New", monospace; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: #2fd47a; display: inline-block; }
+.dot.amber { background: #ffc233; } .dot.red { background: #ff5b5b; }
+.chip-note { margin-left: auto; color: #aebdf0; font-size: 13px; }
+main { outline: none; }
+.sr-only { position: absolute; left: -9999px; }
+
+/* numbered step cards */
+.card { border-radius: 16px; padding: 20px 24px; }
+.step-h { display: flex; align-items: center; gap: 12px; margin: 0 0 16px; font-size: 18px; }
+.step-h .num { width: 38px; height: 38px; border-radius: 10px; background: #e6f2fd; color: #0a5bd0; display: grid; place-items: center; font-weight: 700; }
+.pill { font-size: 12px; font-weight: 600; padding: 3px 12px; border-radius: 999px; border: 1px solid; }
+.pill-blue { background: #e6f2fd; color: #0a5bd0; border-color: #bcd9f6; }
+.pill-green { background: #e6f7ee; color: #19713d; border-color: #b6e0c6; }
+.drop { border: 2px dashed #28b5d6; border-radius: 14px; background: #f7fdff; padding: 18px; }
+.drop.over { background: #e1f7fd; }
+
+@media (max-width: 1000px) {
+  .grid-3, .kv { grid-template-columns: repeat(2, 1fr); }
+  .charts { grid-template-columns: 1fr; }
+  .site-head-in, .tabbar-in, .wrap { padding-left: 16px; padding-right: 16px; }
+  .tabbar a { font-size: 14px; padding: 9px 14px; }
+}
+@media (max-width: 640px) {
+  .grid-3, .grid-2, .kv { grid-template-columns: 1fr; }
+  .site-head-in { flex-wrap: wrap; }
+  .site-title h1 { font-size: 22px; }
+  .hero { padding: 16px; } .chip-note { margin-left: 0; }
+}
+
+
+/* report: status tiles and percentage bars */
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+.tile { background: #f6f8fb; border: 1px solid var(--line); border-top: 4px solid var(--brand); border-radius: 10px; padding: 10px 12px; }
+.tile .v { font-size: 26px; font-weight: 700; }
+.tile .l { color: var(--muted); font-size: 12px; font-weight: 600; }
+.stk { display: grid; grid-template-columns: minmax(90px, 30%) 1fr 90px; gap: 10px; align-items: center; margin-bottom: 8px; font-size: 13px; }
+.stk .lab { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.stk .bar { display: flex; gap: 2px; height: 22px; border-radius: 4px; overflow: hidden; background: #edf1f6; }
+.stk .seg { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; min-width: 0; overflow: hidden; }
+.stk .num { color: var(--muted); font-size: 12px; text-align: right; }
+.charts .legend { margin-bottom: 8px; flex-wrap: wrap; }
+
+.stk.all { border-bottom: 1px solid var(--line); padding-bottom: 10px; margin-bottom: 12px; font-weight: 600; }
+.stk .bar { align-items: center; }
+.stk .seg { height: 100%; }
+.stk .pl { font-size: 11px; color: var(--ink); padding-left: 6px; white-space: nowrap; }
+
+.dlg-body .table-wrap { margin-top: 12px; }
+#imp-out .alert { margin-top: 12px; }
+
+</style>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="site-head-in">
+    <img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNyIgZmlsbD0iIzBiNWNhYiIvPjxwYXRoIGQ9Ik05IDhoMTBsNCA0djEySDl6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTE5IDh2NGg0IiBmaWxsPSIjYjlkNmYyIi8+PHBhdGggZD0iTTEyIDE2aDhNMTIgMjBoOCIgc3Ryb2tlPSIjMGI1Y2FiIiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+Cg==" alt="" width="48" height="48">
+    <div class="site-title">
+      <h1>Procurement System Issue</h1>
+      <p>Procurement system issue, support request and new requirement management</p>
+    </div>
+    <div class="head-right">
+      <label for="requesterName" title="Used as the name in the history log for admin actions">History log name</label>
+      <input id="requesterName" type="text" maxlength="80" autocomplete="off">
+    </div>
+  </div>
+</header>
+
+<nav class="tabbar" aria-label="Main navigation">
+  <div class="tabbar-in">
+    <a href="#create" data-page="create"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>1. Create Issue</span></a>
+    <a href="#my" data-page="my"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg><span>2. My Request Tracking</span><b class="count" id="cnt-my" hidden></b></a>
+    <a href="#admin" data-page="admin"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM4 10h16M9 10v9"/></svg><span>3. Admin Tracking</span><b class="count" id="cnt-admin" hidden></b></a>
+    <a href="#report" data-page="report"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10M12 20V4M19 20v-7"/></svg><span>4. Report</span></a>
+    <a href="#master" data-page="master"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg><span>5. Master Data Management</span></a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="privacy-banner" role="note">
+    <strong>Privacy notice:</strong> Data is saved in this browser's storage (IndexedDB / LocalStorage), which is <strong>not encrypted</strong>.
+    Anyone with access to this browser profile may be able to read it. Do not store passwords or credentials in requests or attachments.
+  </div>
+  <div id="fatal" class="alert alert-error" role="alert" hidden></div>
+
+  <section class="hero" aria-labelledby="pageTitle">
+    <div class="hero-top">
+      <div class="hero-icon" aria-hidden="true"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNyIgZmlsbD0iIzBiNWNhYiIvPjxwYXRoIGQ9Ik05IDhoMTBsNCA0djEySDl6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTE5IDh2NGg0IiBmaWxsPSIjYjlkNmYyIi8+PHBhdGggZD0iTTEyIDE2aDhNMTIgMjBoOCIgc3Ryb2tlPSIjMGI1Y2FiIiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+Cg==" alt="" width="40" height="40"></div>
+      <div>
+        <h2 id="pageTitle">Create Issue</h2>
+        <p id="pageDesc"></p>
+      </div>
+    </div>
+    <div class="hero-chips" id="heroChips"></div>
+  </section>
+
+  <main id="main" tabindex="-1">
+    <!-- 1. Create Issue -->
+    <section class="page" id="page-create" data-title="Create Issue" data-desc="Submit a procurement system issue, support request or new requirement." hidden>
+      <div id="createSuccess" class="alert alert-success" role="status" hidden></div>
+      <form id="issueForm" novalidate>
+        <div class="card step">
+          <h3 class="step-h"><span class="num">1</span>Requester <span class="pill pill-blue">From Employee master</span></h3>
+          <div class="grid-2">
+            <div class="field">
+              <label for="f-employee">Requester Name <span class="req" aria-hidden="true">*</span></label>
+              <select id="f-employee" required aria-describedby="e-employee"></select>
+              <div class="err" id="e-employee" aria-live="polite"></div>
+            </div>
+            <div class="field">
+              <label for="f-division">Division</label>
+              <input id="f-division" type="text" readonly tabindex="-1" placeholder="Filled from the selected employee">
+            </div>
+          </div>
+        </div>
+
+        <div class="card step">
+          <h3 class="step-h"><span class="num">2</span>Issue information</h3>
+          <div class="field">
+            <label for="f-subject">Subject <span class="req" aria-hidden="true">*</span></label>
+            <input id="f-subject" name="subject" type="text" maxlength="200" required aria-describedby="e-subject" autocomplete="off">
+            <div class="err" id="e-subject" aria-live="polite"></div>
+          </div>
+          <div class="grid-3">
+            <div class="field">
+              <label for="f-system">System <span class="req" aria-hidden="true">*</span></label>
+              <select id="f-system" required aria-describedby="e-system"></select>
+              <div class="err" id="e-system" aria-live="polite"></div>
+            </div>
+            <div class="field">
+              <label for="f-application">Application <span class="req" aria-hidden="true">*</span></label>
+              <select id="f-application" required aria-describedby="e-application"></select>
+              <div class="err" id="e-application" aria-live="polite"></div>
+            </div>
+            <div class="field">
+              <label for="f-category">Category <span class="req" aria-hidden="true">*</span></label>
+              <select id="f-category" required aria-describedby="e-category"></select>
+              <div class="err" id="e-category" aria-live="polite"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card step">
+          <h3 class="step-h"><span class="num">3</span>Detail</h3>
+          <div class="field">
+            <label for="f-detail">Detail <span class="req" aria-hidden="true">*</span></label>
+            <textarea id="f-detail" rows="8" maxlength="10000" required aria-describedby="e-detail h-detail"></textarea>
+            <div class="hint" id="h-detail">Describe the issue, exact error messages, business impact, and any troubleshooting already done.</div>
+            <div class="err" id="e-detail" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <div class="card step">
+          <h3 class="step-h"><span class="num">4</span>Attachment <span class="pill pill-green">Optional</span></h3>
+          <div class="field" style="margin-bottom:0">
+            <label for="f-files" class="sr-only">Attachment</label>
+            <div id="createPicker"></div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-primary" id="btnSubmit">Submit Issue</button>
+          <button type="button" class="btn" id="btnClear">Clear Form</button>
+          <button type="button" class="btn btn-ghost" id="btnCancel">Cancel</button>
+          <button type="button" class="btn" id="btnImport" style="margin-left:auto">Import from CSV</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="page" id="page-my" data-title="My Request Tracking" data-desc="Track requests stored on this computer. There is no login, so all local requests are shown." hidden></section>
+    <section class="page" id="page-admin" data-title="Admin Tracking" data-desc="Manage, assign and resolve all requests, and export them to CSV." hidden></section>
+    <section class="page" id="page-report" data-title="Report" data-desc="KPIs and trends calculated from locally stored request data." hidden></section>
+    <section class="page" id="page-master" data-title="Master Data Management" data-desc="Maintain the lists that drive every dropdown, plus settings, backup and restore." hidden></section>
+  </main>
+</div>
+
+<dialog id="dlg" class="dlg" aria-labelledby="dlgTitle"></dialog>
+<dialog id="confirmDlg" class="dlg dlg-small" aria-labelledby="confirmTitle">
+  <form method="dialog">
+    <h2 id="confirmTitle">Confirm</h2>
+    <p id="confirmMsg"></p>
+    <div class="actions end">
+      <button value="cancel" class="btn" id="confirmNo">Cancel</button>
+      <button value="ok" class="btn btn-primary" id="confirmYes">OK</button>
+    </div>
+  </form>
+</dialog>
+<div id="toasts" aria-live="polite" aria-atomic="false"></div>
+
+<script>
+/* storage.js - utilities, LocalStorage settings, IndexedDB persistence, backup/restore.
+   Everything is local to this browser profile. No network access is used. */
+'use strict';
+
+const Util = {
+  esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  },
+  uid(prefix) {
+    let r;
+    try { r = crypto.getRandomValues(new Uint32Array(2)); r = r[0].toString(36) + r[1].toString(36); }
+    catch (e) { r = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2); }
+    return (prefix || 'id') + '-' + Date.now().toString(36) + '-' + r.slice(0, 8);
+  },
+  now() { return new Date().toISOString(); },
+  pad(n) { return String(n).padStart(2, '0'); },
+  fmtDate(iso) {
+    if (!iso) return '';
+    const d = new Date(iso); if (isNaN(d)) return '';
+    return `${Util.pad(d.getDate())}/${Util.pad(d.getMonth() + 1)}/${d.getFullYear()}`;
+  },
+  fmtDateTime(iso) {
+    if (!iso) return '';
+    const d = new Date(iso); if (isNaN(d)) return '';
+    return `${Util.fmtDate(iso)} ${Util.pad(d.getHours())}:${Util.pad(d.getMinutes())}`;
+  },
+  stamp() {
+    const d = new Date();
+    return `${d.getFullYear()}${Util.pad(d.getMonth() + 1)}${Util.pad(d.getDate())}-${Util.pad(d.getHours())}${Util.pad(d.getMinutes())}${Util.pad(d.getSeconds())}`;
+  },
+  fmtSize(b) {
+    if (b < 1024) return b + ' B';
+    if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
+    return (b / 1048576).toFixed(2) + ' MB';
+  },
+  fmtDuration(hours) {
+    if (hours == null || isNaN(hours)) return '-';
+    if (hours < 1) return Math.round(hours * 60) + ' min';
+    if (hours < 48) return hours.toFixed(1) + ' h';
+    return (hours / 24).toFixed(1) + ' d';
+  },
+  /* ISO 8601 week number and week-year for a date */
+  isoWeek(d) {
+    const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    const day = t.getUTCDay() || 7;
+    t.setUTCDate(t.getUTCDate() + 4 - day);
+    const yearStart = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
+    return { year: t.getUTCFullYear(), week: Math.ceil(((t - yearStart) / 86400000 + 1) / 7) };
+  },
+  csvCell(v) {
+    let s = v == null ? '' : String(v);
+    if (/^[=+\-@\t\r]/.test(s)) s = "'" + s; // neutralise spreadsheet formulas
+    return '"' + s.replace(/"/g, '""') + '"';
+  },
+  toCsv(rows) { return '﻿' + rows.map(r => r.map(Util.csvCell).join(',')).join('\r\n'); },
+  download(filename, text, mime) {
+    const blob = text instanceof Blob ? text : new Blob([text], { type: mime || 'text/plain' });
+    Util.downloadBlob(filename, blob);
+  },
+  async downloadBlob(filename, blob) {
+    // Inside a claude.ai artifact the viewer blocks direct downloads; its `downloads` capability asks the viewer instead.
+    try {
+      const d = window.claude && window.claude.use ? await window.claude.use('downloads') : null;
+      if (d) { await d.save({ filename, data: blob }); return; }
+    } catch (e) { if (e && e.code === 'declined') return; /* other errors: fall back to a normal download */ }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+  },
+  blobToB64(blob) {
+    return new Promise((res, rej) => {
+      const fr = new FileReader();
+      fr.onload = () => res(String(fr.result).split(',')[1] || '');
+      fr.onerror = () => rej(fr.error);
+      fr.readAsDataURL(blob);
+    });
+  },
+  b64ToBlob(b64, type) {
+    const bin = atob(b64); const parts = [];
+    for (let i = 0; i < bin.length; i += 8192) {
+      const slice = bin.slice(i, i + 8192); const arr = new Uint8Array(slice.length);
+      for (let j = 0; j < slice.length; j++) arr[j] = slice.charCodeAt(j);
+      parts.push(arr);
+    }
+    return new Blob(parts, { type: type || 'application/octet-stream' });
+  }
+};
+
+/* ---------- LocalStorage: lightweight settings only ---------- */
+const Settings = {
+  KEY: 'psi.settings.v1',
+  defaults: {
+    requesterName: 'Local User',
+    cancelableKinds: ['new', 'pending'],
+    cancelTargetStatusId: 'st7',
+    maxFileMB: 5,
+    maxFiles: 10,
+    allowedExt: 'pdf,png,jpg,jpeg,gif,txt,csv,log,json,xml,doc,docx,xls,xlsx,ppt,pptx,zip,msg,eml',
+    pageSize: 10,
+    defaultPriorityId: 'p2'
+  },
+  load() {
+    let s = {};
+    try { s = JSON.parse(localStorage.getItem(Settings.KEY) || '{}') || {}; } catch (e) { s = {}; }
+    return Object.assign({}, Settings.defaults, s);
+  },
+  save(s) {
+    try { localStorage.setItem(Settings.KEY, JSON.stringify(s)); return true; } catch (e) { return false; }
+  }
+};
+
+/* ---------- IndexedDB ---------- */
+const Store = (function () {
+  const DB_NAME = 'procurement-system-issue';
+  const DB_VER = 1;
+  const STORES = ['master', 'requests', 'activity', 'attachments', 'meta'];
+  const FORMAT = 'PSI-BACKUP';
+  const BACKUP_VERSION = 1;
+  let db = null;
+
+  function friendly(e) {
+    if (e && (e.name === 'QuotaExceededError' || (e.message && /quota/i.test(e.message)))) {
+      return new Error('Browser storage quota exceeded. Remove large attachments or export a backup and free browser storage, then try again.');
+    }
+    if (e instanceof Error) return e;
+    return new Error((e && e.message) || 'A storage operation failed.');
+  }
+
+  function open() {
+    return new Promise((resolve, reject) => {
+      if (!window.indexedDB) return reject(new Error('IndexedDB is not available in this browser (private mode or unsupported browser).'));
+      let r;
+      try { r = indexedDB.open(DB_NAME, DB_VER); } catch (e) { return reject(friendly(e)); }
+      r.onupgradeneeded = () => {
+        const d = r.result;
+        d.createObjectStore('master', { keyPath: 'uid' }).createIndex('type', 'type');
+        d.createObjectStore('requests', { keyPath: 'id' });
+        d.createObjectStore('activity', { keyPath: 'id' }).createIndex('requestId', 'requestId');
+        d.createObjectStore('attachments', { keyPath: 'id' }).createIndex('requestId', 'requestId');
+        d.createObjectStore('meta', { keyPath: 'key' });
+      };
+      r.onsuccess = () => { db = r.result; db.onversionchange = () => db.close(); resolve(db); };
+      r.onerror = () => reject(friendly(r.error));
+      r.onblocked = () => reject(new Error('Database is blocked by another tab. Close other tabs of this app and reload.'));
+    });
+  }
+
+  const reqP = r => new Promise((res, rej) => { r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
+
+  /* Runs fn(stores) in one transaction; resolves with fn's result once the transaction commits. */
+  function run(names, mode, fn) {
+    return new Promise((resolve, reject) => {
+      let t, result;
+      try { t = db.transaction(names, mode); } catch (e) { return reject(friendly(e)); }
+      const s = {}; names.forEach(n => { s[n] = t.objectStore(n); });
+      t.oncomplete = () => resolve(result);
+      t.onabort = () => reject(friendly(t.error));
+      Promise.resolve().then(() => fn(s)).then(r => { result = r; }, e => { try { t.abort(); } catch (_) { } reject(friendly(e)); });
+    });
+  }
+
+  const getAll = name => run([name], 'readonly', s => reqP(s[name].getAll()));
+  const getByIndex = (name, idx, key) => run([name], 'readonly', s => reqP(s[name].index(idx).getAll(key)));
+
+  /* ----- seed data ----- */
+  function seedRecords() {
+    const out = [];
+    const add = (type, id, name, extra) => out.push(Object.assign({ uid: type + ':' + id, type, id, name, active: true, order: out.filter(o => o.type === type).length + 1 }, extra || {}));
+    [['s1', 'SAP S4 HANA'], ['s2', 'E-Procurement'], ['s3', 'DEB Portal'], ['s4', 'Other']].forEach(r => add('system', r[0], r[1]));
+    [['a1', 's1', 'Purchase Requisition'], ['a2', 's1', 'Purchase Order'], ['a3', 's1', 'Source List'],
+     ['a4', 's2', 'Catalog'], ['a5', 's2', 'Sourcing'], ['a6', 's3', 'Vendor Management']].forEach(r => add('application', r[0], r[2], { systemId: r[1] }));
+    [['c1', 'New Requirement'], ['c2', 'System Error'], ['c3', 'Need Help']].forEach(r => add('category', r[0], r[1]));
+    [['st1', 'New', 'new'], ['st2', 'In Progress', 'progress'], ['st3', 'Pending User', 'pending'], ['st4', 'Pending Support Team', 'pending'],
+     ['st5', 'Resolved', 'resolved'], ['st6', 'Closed', 'closed'], ['st7', 'Rejected', 'rejected']].forEach(r => add('status', r[0], r[1], { kind: r[2] }));
+    [['p1', 'Low'], ['p2', 'Medium'], ['p3', 'High'], ['p4', 'Critical']].forEach(r => add('priority', r[0], r[1]));
+    [['t1', 'Procurement Application Support'], ['t2', 'SAP Development'], ['t3', 'Digital Platform Team']].forEach(r => add('team', r[0], r[1]));
+    [['u1', 'Support Agent 1'], ['u2', 'Support Agent 2']].forEach(r => add('assignee', r[0], r[1]));
+    out.push.apply(out, employeeSeed());
+    ['Fixed', 'Workaround Provided', 'Configuration Change', 'Training / Guidance', 'Not an Issue', 'Duplicate', 'Enhancement Delivered']
+      .forEach((n, i) => add('restype', 'r' + (i + 1), n));
+    [['p1', 'Low', 120], ['p2', 'Medium', 72], ['p3', 'High', 24], ['p4', 'Critical', 8]].forEach(r => add('sla', 'sla-' + r[0], r[1], { priorityId: r[0], hours: r[2] }));
+    return out;
+  }
+
+  /* Sample employees (fictional) - replace via Master Data > Employee */
+  function employeeSeed() {
+    return [['e1', 'Sample Employee 1', 'Procurement Division', 'E001'], ['e2', 'Sample Employee 2', 'Finance Division', 'E002'], ['e3', 'Sample Employee 3', 'IT Division', 'E003']]
+      .map((r, i) => ({ uid: 'employee:' + r[0], type: 'employee', id: r[0], name: r[1], division: r[2], employeeId: r[3], active: true, order: i + 1 }));
+  }
+
+  async function seedIfNeeded() {
+    const seeded = await run(['meta'], 'readonly', s => reqP(s.meta.get('seeded')));
+    if (seeded) { // upgrade path: databases created before the Employee master existed
+      await run(['master', 'meta'], 'readwrite', async s => {
+        if (await reqP(s.meta.get('seed-employee'))) return;
+        const have = await reqP(s.master.index('type').count('employee'));
+        if (!have) employeeSeed().forEach(r => s.master.put(r));
+        s.meta.put({ key: 'seed-employee', value: true });
+      });
+      return false;
+    }
+    await run(['master', 'meta'], 'readwrite', s => {
+      seedRecords().forEach(r => s.master.put(r));
+      s.meta.put({ key: 'seeded', value: true });
+      s.meta.put({ key: 'seed-employee', value: true });
+    });
+    return true;
+  }
+
+  /* ----- requests ----- */
+  /* Allocates the next PSI-YYYY-00001 id inside an open transaction. */
+  async function nextId(s, year) {
+    const key = 'seq-' + year;
+    const c = await reqP(s.meta.get(key));
+    let seq = (c ? c.value : 0) + 1, id;
+    for (;;) { // guarantee uniqueness even if counters were restored oddly
+      id = `PSI-${year}-${String(seq).padStart(5, '0')}`;
+      if (!(await reqP(s.requests.get(id)))) break;
+      seq++;
+    }
+    s.meta.put({ key, value: seq });
+    return id;
+  }
+
+  /* Creates many requests in ONE transaction: all are saved or none are. */
+  async function createRequests(drafts, activity) {
+    return run(['requests', 'activity', 'meta'], 'readwrite', async s => {
+      const year = new Date().getFullYear(), out = [];
+      for (const draft of drafts) {
+        const id = await nextId(s, year), now = Util.now();
+        const created = draft.createdAt || now; // imported history keeps its own dates
+        const rec = Object.assign({}, draft, { id, createdAt: created, updatedAt: draft.updatedAt || created, attachments: [] });
+        s.requests.put(rec);
+        (activity ? activity(rec) : []).forEach((a, i) => s.activity.put(Object.assign({ id: Util.uid('ACT'), requestId: id, at: created }, a)));
+        out.push(rec);
+      }
+      return out;
+    });
+  }
+
+  /* Writes many master records in one transaction (all or nothing). */
+  const putMasterBatch = recs => run(['master'], 'readwrite', s => { recs.forEach(r => s.master.put(r)); });
+
+  async function createRequest(draft, files, activity) {
+    return run(['requests', 'activity', 'attachments', 'meta'], 'readwrite', async s => {
+      const year = new Date().getFullYear();
+      const id = await nextId(s, year);
+      const now = Util.now();
+      const refs = [];
+      (files || []).forEach(f => {
+        const att = { id: Util.uid('ATT'), requestId: id, name: f.name, size: f.size, type: f.type || '', addedAt: now, blob: new Blob([f], { type: f.type || 'application/octet-stream' }) };
+        s.attachments.put(att);
+        refs.push({ id: att.id, name: att.name, size: att.size, type: att.type });
+      });
+      const rec = Object.assign({}, draft, { id, createdAt: now, updatedAt: now, attachments: refs });
+      s.requests.put(rec);
+      (activity ? activity(rec) : []).forEach(a => s.activity.put(Object.assign({ id: Util.uid('ACT'), requestId: id, at: now }, a)));
+      return rec;
+    });
+  }
+
+  async function saveRequest(rec, activities, files) {
+    return run(['requests', 'activity', 'attachments'], 'readwrite', s => {
+      const now = Util.now();
+      const next = Object.assign({}, rec, { updatedAt: now, attachments: (rec.attachments || []).slice() });
+      (files || []).forEach(f => {
+        const att = { id: Util.uid('ATT'), requestId: rec.id, name: f.name, size: f.size, type: f.type || '', addedAt: now, blob: new Blob([f], { type: f.type || 'application/octet-stream' }) };
+        s.attachments.put(att);
+        next.attachments.push({ id: att.id, name: att.name, size: att.size, type: att.type });
+      });
+      s.requests.put(next);
+      (activities || []).forEach((a, i) => s.activity.put(Object.assign({ id: Util.uid('ACT'), requestId: rec.id, at: new Date(Date.parse(now) + i).toISOString() }, a)));
+      return next;
+    });
+  }
+
+  const getActivity = id => getByIndex('activity', 'requestId', id).then(l => l.sort((a, b) => a.at < b.at ? -1 : a.at > b.at ? 1 : 0));
+  const getAttachment = id => run(['attachments'], 'readonly', s => reqP(s.attachments.get(id)));
+  const putMaster = rec => run(['master'], 'readwrite', s => { s.master.put(rec); });
+
+  /* ----- backup / restore ----- */
+  async function exportAll() {
+    const [master, requests, activity, attachments, meta] = await Promise.all(['master', 'requests', 'activity', 'attachments', 'meta'].map(getAll));
+    const atts = [];
+    for (const a of attachments) {
+      atts.push({ id: a.id, requestId: a.requestId, name: a.name, size: a.size, type: a.type, addedAt: a.addedAt, data: await Util.blobToB64(a.blob) });
+    }
+    return {
+      format: FORMAT, version: BACKUP_VERSION, app: 'Procurement System Issue', exportedAt: Util.now(),
+      master, requests, activity, attachments: atts,
+      counters: meta.filter(m => /^seq-\d+$/.test(m.key))
+    };
+  }
+
+  function validateBackup(o) {
+    const errors = [];
+    if (!o || typeof o !== 'object') return ['File is not a valid JSON object.'];
+    if (o.format !== FORMAT) errors.push('Not a Procurement System Issue backup (format mismatch).');
+    if (typeof o.version !== 'number') errors.push('Backup version is missing.');
+    else if (o.version > BACKUP_VERSION) errors.push(`Backup version ${o.version} is newer than this app supports (${BACKUP_VERSION}).`);
+    ['master', 'requests', 'activity', 'attachments'].forEach(k => { if (!Array.isArray(o[k])) errors.push(`Section "${k}" is missing or not a list.`); });
+    return errors;
+  }
+
+  async function importBackup(o, mode) {
+    const errors = validateBackup(o);
+    if (errors.length) throw new Error(errors.join(' '));
+    const sum = { masterAdded: 0, requestsAdded: 0, requestsSkipped: 0, activityAdded: 0, attachmentsAdded: 0, warnings: [] };
+    const existing = mode === 'merge' ? {
+      master: new Set((await getAll('master')).map(m => m.uid)),
+      requests: new Set((await getAll('requests')).map(r => r.id)),
+      activity: new Set((await getAll('activity')).map(a => a.id)),
+      attachments: new Set((await getAll('attachments')).map(a => a.id))
+    } : { master: new Set(), requests: new Set(), activity: new Set(), attachments: new Set() };
+
+    const master = [], seenM = new Set();
+    o.master.forEach(m => {
+      if (!m || !m.uid || !m.type || !m.name && m.type !== 'sla') return;
+      if (seenM.has(m.uid) || existing.master.has(m.uid)) return;
+      seenM.add(m.uid); master.push(m);
+    });
+    const requests = [], reqIds = new Set(), seenR = new Set();
+    o.requests.forEach(r => {
+      if (!r || !r.id || !r.subject) { sum.warnings.push('A request without ID/subject was ignored.'); return; }
+      if (seenR.has(r.id)) { sum.warnings.push(`Duplicate request ${r.id} inside backup ignored.`); return; }
+      seenR.add(r.id);
+      if (existing.requests.has(r.id)) { sum.requestsSkipped++; return; }
+      requests.push(r); reqIds.add(r.id);
+    });
+    const attachments = [], seenA = new Set();
+    o.attachments.forEach(a => {
+      if (!a || !a.id || !reqIds.has(a.requestId) || seenA.has(a.id) || existing.attachments.has(a.id)) return;
+      try { attachments.push({ id: a.id, requestId: a.requestId, name: a.name, size: a.size, type: a.type, addedAt: a.addedAt, blob: Util.b64ToBlob(a.data || '', a.type) }); seenA.add(a.id); }
+      catch (e) { sum.warnings.push(`Attachment ${a.name || a.id} could not be decoded and was skipped.`); }
+    });
+    requests.forEach(r => { // drop dangling attachment references
+      const before = (r.attachments || []).length;
+      r.attachments = (r.attachments || []).filter(x => seenA.has(x.id));
+      if (r.attachments.length !== before) sum.warnings.push(`${r.id}: ${before - r.attachments.length} missing attachment reference(s) removed.`);
+    });
+    const activity = [], seenAct = new Set();
+    o.activity.forEach(a => {
+      if (!a || !a.id || !reqIds.has(a.requestId) || seenAct.has(a.id) || existing.activity.has(a.id)) return;
+      seenAct.add(a.id); activity.push(a);
+    });
+
+    await run(STORES, 'readwrite', async s => {
+      let counters = {};
+      if (mode === 'replace') {
+        STORES.forEach(n => s[n].clear());
+      } else {
+        (await reqP(s.meta.getAll())).forEach(m => { if (/^seq-/.test(m.key)) counters[m.key] = m.value; });
+      }
+      master.forEach(m => s.master.put(m));
+      requests.forEach(r => s.requests.put(r));
+      attachments.forEach(a => s.attachments.put(a));
+      activity.forEach(a => s.activity.put(a));
+      (o.counters || []).forEach(c => { if (c && /^seq-\d+$/.test(c.key)) counters[c.key] = Math.max(counters[c.key] || 0, +c.value || 0); });
+      requests.forEach(r => { // keep counters ahead of any restored ID
+        const m = /^PSI-(\d{4})-(\d+)$/.exec(r.id);
+        if (m) counters['seq-' + m[1]] = Math.max(counters['seq-' + m[1]] || 0, +m[2]);
+      });
+      Object.keys(counters).forEach(k => s.meta.put({ key: k, value: counters[k] }));
+      s.meta.put({ key: 'seeded', value: true });
+    });
+    sum.masterAdded = master.length; sum.requestsAdded = requests.length;
+    sum.activityAdded = activity.length; sum.attachmentsAdded = attachments.length;
+    return sum;
+  }
+
+  async function estimate() {
+    try { if (navigator.storage && navigator.storage.estimate) return await navigator.storage.estimate(); } catch (e) { }
+    return null;
+  }
+
+  return { open, seedIfNeeded, getAll, createRequest, createRequests, putMasterBatch, saveRequest, getActivity, getAttachment, putMaster, exportAll, importBackup, validateBackup, estimate, FORMAT, BACKUP_VERSION };
+})();
+
+
+
+</script>
+<script>
+/* report.js - report filters, status counts and percentage charts (local HTML/CSS, no libraries). */
+'use strict';
+
+const Report = (function () {
+  const E = Util.esc;
+  let root = null;
+  let lastRows = [];
+  const F = { year: '', month: '', week: '', systemId: '', applicationId: '', categoryId: '', statusId: '', priorityId: '' };
+
+  /* ---- shared helpers (also used by the tracking pages) ---- */
+  function statusOf(data, r) { return data.byId.status[r.statusId] || null; }
+  function kindOf(data, r) { const s = statusOf(data, r); return s ? s.kind : 'new'; }
+  const TERMINAL = ['resolved', 'closed', 'rejected'];
+  function isOpen(data, r) { return TERMINAL.indexOf(kindOf(data, r)) < 0; }
+  function slaHours(data, priorityId) {
+    const s = data.master.sla.find(x => x.priorityId === priorityId && x.active !== false);
+    return s ? Number(s.hours) : null;
+  }
+  function isOverdue(data, r, now) {
+    if (!isOpen(data, r)) return false;
+    const h = slaHours(data, r.priorityId);
+    if (h == null || !(h > 0)) return false;
+    return ((now || Date.now()) - Date.parse(r.createdAt)) / 3600000 > h;
+  }
+  function resolutionHours(r) {
+    if (!r.resolvedAt) return null;
+    const h = (Date.parse(r.resolvedAt) - Date.parse(r.createdAt)) / 3600000;
+    return h >= 0 ? h : 0;
+  }
+
+  /* ---- filtering ---- */
+  function filtered(data) {
+    return data.requests.filter(r => {
+      const d = new Date(r.createdAt);
+      if (F.year && d.getFullYear() !== +F.year) return false;
+      if (F.month && d.getMonth() + 1 !== +F.month) return false;
+      if (F.week) { const w = Util.isoWeek(d); if (w.week !== +F.week || (F.year && w.year !== +F.year)) return false; }
+      if (F.systemId && r.systemId !== F.systemId) return false;
+      if (F.applicationId && r.applicationId !== F.applicationId) return false;
+      if (F.categoryId && r.categoryId !== F.categoryId) return false;
+      if (F.statusId && r.statusId !== F.statusId) return false;
+      if (F.priorityId && r.priorityId !== F.priorityId) return false;
+      return true;
+    });
+  }
+
+  /* ---- status counts and percentage mixes ---- */
+  const CAT_COLORS = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300', '#6250d6', '#e34948'];
+  const STATUS_COLORS = { new: '#2a78d6', progress: '#eda100', pending: '#6250d6', resolved: '#1baf7a', closed: '#898781', rejected: '#e34948' };
+  let appSystemId = '';
+  let catDivision = '';
+  const pct = (n, t) => t ? Math.round(n / t * 100) : 0;
+  function catColor(data, id) { const i = data.master.category.findIndex(c => c.id === id); return CAT_COLORS[(i < 0 ? 0 : i) % CAT_COLORS.length]; }
+
+  function groupRows(rows, keyFn, masterList, labelFn) {
+    const m = new Map();
+    rows.forEach(r => { const k = keyFn(r); const g = m.get(k) || { key: k, label: labelFn(r), rows: [] }; g.rows.push(r); m.set(k, g); });
+    const order = masterList.map(x => x.id);
+    const pos = k => { const i = order.indexOf(k); return i < 0 ? 999 : i; };
+    return Array.from(m.values()).sort((a, b) => pos(a.key) - pos(b.key));
+  }
+
+  function statusTiles(data, rows) {
+    const counts = new Map();
+    rows.forEach(r => counts.set(r.statusId, (counts.get(r.statusId) || 0) + 1));
+    const list = data.master.status.filter(s => s.active !== false || counts.get(s.id));
+    return '<div class="tiles">' + list.map(s => `<div class="tile" style="border-top-color:${STATUS_COLORS[s.kind] || '#888'}"><div class="v">${counts.get(s.id) || 0}</div><div class="l">${E(s.name)}</div></div>`).join('') + '</div>';
+  }
+
+  /* systems that have rows, plus active systems with none (shown as 0) unless a System filter is set */
+  function systemList(data, rows) {
+    const have = new Set(rows.map(r => r.systemId));
+    return data.master.system.filter(s => have.has(s.id) || (s.active !== false && !F.systemId));
+  }
+
+  /* % of Resolved + Closed vs all non-rejected requests, per System */
+  function doneShare(data, rows) {
+    const list = systemList(data, rows);
+    if (!list.length) return '<div class="empty">No data for the selected filters.</div>';
+    return list.map(s => {
+      const rs = rows.filter(r => r.systemId === s.id && kindOf(data, r) !== 'rejected');
+      const done = rs.filter(r => { const k = kindOf(data, r); return k === 'resolved' || k === 'closed'; }).length;
+      const p = pct(done, rs.length);
+      const inside = p >= 14;
+      return `<div class="stk"><span class="lab" title="${E(s.name)}">${E(s.name)}</span><span class="bar"><span class="seg" style="width:${p}%;background:#1baf7a">${inside ? p + '%' : ''}</span>${inside ? '' : `<span class="pl">${p}%</span>`}</span><span class="num">${done} of ${rs.length} (${p}%)</span></div>`;
+    }).join('') + '<div class="legend" style="margin-top:6px"><span><i style="background:#1baf7a"></i>Resolved + Closed</span><span><i style="background:#edf1f6;border:1px solid #d3dae2"></i>Other non-rejected statuses</span></div>';
+  }
+
+  function catLegend(data, rows) {
+    const ids = new Set(rows.map(r => r.categoryId));
+    const list = data.master.category.filter(c => ids.has(c.id));
+    return '<div class="legend">' + list.map(c => `<span><i style="background:${catColor(data, c.id)}"></i>${E(c.name)}</span>`).join('') + '</div>';
+  }
+
+  function stacked(data, groups) {
+    return groups.map(g => {
+      const cls = g.all ? 'stk all' : 'stk';
+      if (!g.rows.length) return `<div class="${cls}"><span class="lab" title="${E(g.label)}">${E(g.label)}</span><span class="bar"><span class="pl">no requests</span></span><span class="num">n = 0</span></div>`;
+      const by = new Map();
+      g.rows.forEach(r => { const e = by.get(r.categoryId) || { name: r.categoryName, n: 0 }; e.n++; by.set(r.categoryId, e); });
+      const order = data.master.category.map(c => c.id);
+      const segs = Array.from(by.entries()).sort((a, b) => order.indexOf(a[0]) - order.indexOf(b[0])).map(([id, e]) => {
+        const p = pct(e.n, g.rows.length);
+        return `<span class="seg" style="width:${e.n / g.rows.length * 100}%;background:${catColor(data, id)}" title="${E(e.name)}: ${e.n} (${p}%)">${p >= 12 ? p + '%' : ''}</span>`;
+      }).join('');
+      return `<div class="${cls}"><span class="lab" title="${E(g.label)}">${E(g.label)}</span><span class="bar">${segs}</span><span class="num">n = ${g.rows.length}</span></div>`;
+    }).join('');
+  }
+
+  function mixSection(data, rows) {
+    const card = (t, body, cls) => `<div class="card ${cls || ''}"><h2>${E(t)}</h2>${body}</div>`;
+    const empty = '<div class="empty">No data for the selected filters.</div>';
+    const sysGroups = groupRows(rows, r => r.systemId, data.master.system, r => r.systemName);
+    if (!sysGroups.some(g => g.key === appSystemId)) appSystemId = sysGroups.length ? sysGroups[0].key : '';
+    const appRows = rows.filter(r => r.systemId === appSystemId);
+    const appGroups = groupRows(appRows, r => r.applicationId, data.master.application, r => r.applicationName);
+    const sel = `<div style="max-width:280px;margin-bottom:10px"><label for="rp-appsys">System</label><select id="rp-appsys">${sysGroups.map(g => `<option value="${E(g.key)}"${g.key === appSystemId ? ' selected' : ''}>${E(g.label)}</option>`).join('')}</select></div>`;
+    const divs = Array.from(new Set(data.master.employee.map(e => e.division).concat(rows.map(r => r.requesterDivision)).filter(Boolean))).sort();
+    if (catDivision && divs.indexOf(catDivision) < 0) catDivision = '';
+    const divRows = catDivision ? rows.filter(r => r.requesterDivision === catDivision) : rows;
+    const divSel = `<div style="max-width:280px;margin-bottom:10px"><label for="rp-catdiv">Division (requester)</label><select id="rp-catdiv"><option value="">All divisions</option>${divs.map(d => `<option value="${E(d)}"${d === catDivision ? ' selected' : ''}>${E(d)}</option>`).join('')}</select></div>`;
+    const catGroups = [{ key: '__all', label: 'All Systems', rows: divRows, all: true }].concat(
+      systemList(data, rows).map(s => ({ key: s.id, label: s.name, rows: divRows.filter(r => r.systemId === s.id) })));
+    return card('Requests by status (count)', rows.length ? statusTiles(data, rows) : empty, 'full') +
+      card('% Progress by System (Resolved + Closed vs non-rejected requests)', doneShare(data, rows)) +
+      card('% by Category, by System', divSel + (rows.length ? catLegend(data, divRows) + stacked(data, catGroups) : empty)) +
+      card('% by Category, by Application (filter by System)', rows.length ? sel + catLegend(data, appRows) + (appGroups.length ? stacked(data, appGroups) : empty) : empty, 'full');
+  }
+
+  /* ---- UI ---- */
+  function opts(list, sel, all, labelFn) {
+    return `<option value="">${E(all)}</option>` + list.map(o => `<option value="${E(o.value)}"${String(o.value) === String(sel) ? ' selected' : ''}>${E(o.label)}</option>`).join('');
+  }
+
+  function buildShell(data) {
+    root.innerHTML = `
+      <div class="card"><h2>Report filters</h2>
+        <div class="toolbar" id="rp-filters"></div>
+        <div class="hint" style="margin-top:8px">Filters apply to the request submission date (Year / Month / ISO Week). Weeks follow ISO 8601 (Monday start).</div>
+      </div>
+      <div class="charts" id="rp-mix"></div>
+      `;
+  }
+
+  function renderFilters(data) {
+    const years = Array.from(new Set(data.requests.map(r => new Date(r.createdAt).getFullYear()).concat([new Date().getFullYear()]))).sort((a, b) => b - a);
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const weeks = []; for (let i = 1; i <= 53; i++) weeks.push({ value: i, label: 'Week ' + i });
+    const nm = o => ({ value: o.id, label: o.name + (o.active === false ? ' (inactive)' : '') });
+    const apps = data.master.application.filter(a => !F.systemId || a.systemId === F.systemId);
+    const defs = [
+      ['year', 'Year', years.map(y => ({ value: y, label: y })), 'All years'],
+      ['month', 'Month', months.map((m, i) => ({ value: i + 1, label: m })), 'All months'],
+      ['week', 'Week', weeks, 'All weeks'],
+      ['systemId', 'System', data.master.system.map(nm), 'All systems'],
+      ['applicationId', 'Application', apps.map(nm), 'All applications'],
+      ['categoryId', 'Category', data.master.category.map(nm), 'All categories'],
+      ['statusId', 'Status', data.master.status.map(nm), 'All statuses'],
+      ['priorityId', 'Priority', data.master.priority.map(nm), 'All priorities']
+    ];
+    const box = root.querySelector('#rp-filters');
+    box.innerHTML = defs.map(d => `<div><label for="rp-${d[0]}">${d[1]}</label><select id="rp-${d[0]}" data-f="${d[0]}">${opts(d[2], F[d[0]], d[3])}</select></div>`).join('') +
+      `<div class="toolbar-actions"><button class="btn" id="rp-reset" type="button">Reset</button><button class="btn btn-primary" id="rp-export" type="button">Export CSV</button></div>`;
+  }
+
+  function render(data) {
+    if (!root) return;
+    if (!root.querySelector('#rp-filters')) buildShell(data);
+    renderFilters(data);
+    const rows = filtered(data);
+    lastRows = rows;
+    root.querySelector('#rp-mix').innerHTML = mixSection(data, rows);
+  }
+
+  function exportCsv(data) {
+    const now = Date.now();
+    const head = ['Request ID', 'Subject', 'System', 'Application', 'Category', 'Status', 'Priority', 'Requester', 'Division', 'Assigned To', 'Created', 'Resolved', 'Resolution Hours', 'Overdue', 'Year', 'Month', 'ISO Week'];
+    const rows = lastRows.map(r => {
+      const d = new Date(r.createdAt), w = Util.isoWeek(d), h = resolutionHours(r);
+      return [r.id, r.subject, r.systemName, r.applicationName, r.categoryName, (statusOf(data, r) || {}).name || r.status, r.priority, r.requester, r.requesterDivision || '', r.assignedTo || '',
+        Util.fmtDateTime(r.createdAt), Util.fmtDateTime(r.resolvedAt), h == null ? '' : h.toFixed(2), isOverdue(data, r, now) ? 'Yes' : 'No', d.getFullYear(), d.getMonth() + 1, w.week];
+    });
+    Util.download(`psi-report-${Util.stamp()}.csv`, Util.toCsv([head].concat(rows)), 'text/csv;charset=utf-8');
+  }
+
+  function init(el, getData) {
+    root = el;
+    root.addEventListener('change', e => {
+      const t = e.target;
+      const id = t.id;
+      if (id === 'rp-appsys') appSystemId = t.value;
+      else if (id === 'rp-catdiv') catDivision = t.value;
+      else if (t.dataset && t.dataset.f) {
+        F[t.dataset.f] = t.value;
+        if (t.dataset.f === 'systemId') F.applicationId = '';
+      } else return;
+      render(getData());
+      const again = root.querySelector('#' + id); if (again) again.focus(); // keep keyboard focus after redraw
+    });
+    root.addEventListener('click', e => {
+      if (e.target.id === 'rp-reset') { Object.keys(F).forEach(k => F[k] = ''); render(getData()); }
+      if (e.target.id === 'rp-export') exportCsv(getData());
+    });
+  }
+
+  return { init, render, isOverdue, isOpen, kindOf, statusOf, slaHours, resolutionHours, filtered, F };
+})();
+
+
+
+
+</script>
+<script>
+/* app.js - navigation, Create Issue, tracking pages, request management, master data, backup/restore UI. */
+'use strict';
+
+(function () {
+  const E = Util.esc;
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+
+  const App = { settings: Settings.load(), data: null, page: null };
+  const TYPES = ['system', 'application', 'category', 'status', 'priority', 'team', 'assignee', 'restype', 'sla', 'employee'];
+  const KINDS = { new: 'New (open)', progress: 'In progress (open)', pending: 'Pending (open)', resolved: 'Resolved (terminal)', closed: 'Closed (terminal)', rejected: 'Rejected (terminal)' };
+  const ACT_LABEL = { created: 'Created', status: 'Status change', priority: 'Priority change', assignment: 'Assignment', comment: 'Comment', attachment: 'Attachment added', resolution: 'Resolution', closure: 'Closure' };
+
+  /* ================= generic helpers ================= */
+  function toast(msg, kind) {
+    const t = document.createElement('div');
+    t.className = 'toast ' + (kind || ''); t.textContent = msg;
+    $('#toasts').appendChild(t);
+    setTimeout(() => t.remove(), kind === 'err' ? 8000 : 4000);
+  }
+  function fail(e, prefix) { console.error(e); toast((prefix ? prefix + ': ' : '') + (e && e.message ? e.message : e), 'err'); }
+
+  function confirmBox(title, msg, ok) {
+    return new Promise(res => {
+      const d = $('#confirmDlg');
+      $('#confirmTitle').textContent = title; $('#confirmMsg').textContent = msg; $('#confirmYes').textContent = ok || 'OK';
+      d.returnValue = '';
+      d.addEventListener('close', () => res(d.returnValue === 'ok'), { once: true });
+      d.showModal();
+    });
+  }
+  function openDlg(title, body, wide) {
+    const d = $('#dlg');
+    d.innerHTML = `<div class="dlg-head"><h2 id="dlgTitle">${E(title)}</h2><button type="button" class="btn btn-sm" data-close aria-label="Close dialog">Close</button></div><div class="dlg-body">${body}</div>`;
+    d.style.width = wide ? '' : 'min(620px, 96vw)';
+    if (!d.open) d.showModal();
+    return d;
+  }
+  function closeDlg() { const d = $('#dlg'); if (d.open) d.close(); }
+
+  function opts(list, sel, placeholder, labelFn) {
+    return (placeholder == null ? '' : `<option value="">${E(placeholder)}</option>`) +
+      list.map(o => `<option value="${E(o.id)}"${o.id === sel ? ' selected' : ''}>${E(labelFn ? labelFn(o) : o.name)}</option>`).join('');
+  }
+  const active = type => App.data.master[type].filter(m => m.active !== false);
+  const withCurrent = (type, id) => App.data.master[type].filter(m => m.active !== false || m.id === id);
+  const nameInact = o => o.name + (o.active === false ? ' (inactive)' : '');
+
+  async function loadData() {
+    const [master, requests] = await Promise.all([Store.getAll('master'), Store.getAll('requests')]);
+    const m = {}, by = {};
+    TYPES.forEach(t => { m[t] = []; by[t] = {}; });
+    master.forEach(r => { if (m[r.type]) { m[r.type].push(r); by[r.type][r.id] = r; } });
+    TYPES.forEach(t => m[t].sort((a, b) => (a.order || 0) - (b.order || 0) || String(a.name).localeCompare(String(b.name))));
+    App.data = { master: m, byId: by, requests };
+    renderHero();
+  }
+
+  /* hero panel + tab counters follow the reference layout */
+  function renderHero() {
+    const D = App.data, p = App.page || 'create', sec = $('#page-' + p);
+    if (!D || !sec) return;
+    $('#pageTitle').textContent = sec.dataset.title;
+    $('#pageDesc').textContent = sec.dataset.desc || '';
+    const open = D.requests.filter(r => Report.isOpen(D, r)).length;
+    const overdue = D.requests.filter(r => Report.isOverdue(D, r)).length;
+    const chip = (label, val, cls) => `<span class="chip"><i class="dot ${cls || ''}"></i>${E(label)}: <b>${E(val)}</b></span>`;
+    let chips;
+    if (p === 'create') chips = chip('Employees', active('employee').length) + chip('Systems', active('system').length) + chip('Applications', active('application').length);
+    else if (p === 'master') chips = chip('Systems', D.master.system.length) + chip('Applications', D.master.application.length) + chip('Employees', D.master.employee.length);
+    else chips = chip('Total requests', D.requests.length) + chip('Open', open, 'amber') + chip('Overdue', overdue, overdue ? 'red' : '');
+    $('#heroChips').innerHTML = chips + '<span class="chip-note">Data stays in this browser only</span>';
+    const my = $('#cnt-my'), ad = $('#cnt-admin');
+    my.textContent = D.requests.length; my.hidden = !D.requests.length;
+    ad.textContent = open; ad.hidden = !open;
+  }
+  const getData = () => App.data;
+  const reqById = id => App.data.requests.find(r => r.id === id);
+
+  function statusBadge(r) {
+    const s = App.data.byId.status[r.statusId];
+    return `<span class="badge kind-${s ? s.kind : 'new'}">${E(s ? s.name : r.status)}</span>`;
+  }
+  function priorityRank(r) { return Math.max(0, App.data.master.priority.findIndex(p => p.id === r.priorityId)); }
+  function priorityName(r) { const p = App.data.byId.priority[r.priorityId]; return p ? p.name : r.priority; }
+  function priorityBadge(r) { return `<span class="badge pr-${Math.min(priorityRank(r), 3)}">${E(priorityName(r))}</span>`; }
+  const statusName = r => { const s = App.data.byId.status[r.statusId]; return s ? s.name : r.status; };
+
+  /* ================= router ================= */
+  const pages = {};
+  function route() {
+    let p = (location.hash || '#create').slice(1);
+    if (!pages[p]) p = 'create';
+    $$('.page').forEach(s => { s.hidden = s.id !== 'page-' + p; });
+    $$('.tabbar a').forEach(a => { const on = a.dataset.page === p; a.classList.toggle('active', on); if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    document.title = $('#page-' + p).dataset.title + ' - Procurement System Issue';
+    App.page = p;
+    renderHero();
+    if (App.data) pages[p].activate();
+  }
+  const go = p => { if (location.hash === '#' + p) route(); else location.hash = p; };
+  async function refreshAll() { await loadData(); if (App.page) pages[App.page].activate(); }
+
+  /* ================= file picker ================= */
+  function allowedExts() { return App.settings.allowedExt.split(',').map(s => s.trim().toLowerCase().replace(/^\./, '')).filter(Boolean); }
+  function FilePicker(container, prefix) {
+    const st = { files: [] };
+    container.innerHTML = `<div class="drop"><input type="file" multiple id="${prefix}-files" aria-describedby="${prefix}-fhint">
+      <div class="hint" id="${prefix}-fhint"></div><div class="err" aria-live="polite"></div><ul class="file-list" aria-label="Selected files"></ul></div>`;
+    const drop = $('.drop', container), input = $('input', container), err = $('.err', container), list = $('.file-list', container);
+    function hint() { $('.hint', container).textContent = `Allowed: ${allowedExts().join(', ')}. Max ${App.settings.maxFileMB} MB per file, up to ${App.settings.maxFiles} files. You can also drag and drop files here.`; }
+    function draw() {
+      list.innerHTML = st.files.map((f, i) => `<li><span><span class="fname">${E(f.name)}</span><span class="fsize">${Util.fmtSize(f.size)}</span></span><button type="button" class="btn btn-sm btn-danger" data-rm="${i}" aria-label="Remove ${E(f.name)}">Remove</button></li>`).join('');
+    }
+    function add(fileList) {
+      const errs = [];
+      Array.from(fileList).forEach(f => {
+        const ext = (f.name.split('.').pop() || '').toLowerCase();
+        if (f.name.indexOf('.') < 0 || allowedExts().indexOf(ext) < 0) errs.push(`"${f.name}": file type ".${ext}" is not allowed.`);
+        else if (f.size === 0) errs.push(`"${f.name}" is empty.`);
+        else if (f.size > App.settings.maxFileMB * 1048576) errs.push(`"${f.name}" is ${Util.fmtSize(f.size)}; the limit is ${App.settings.maxFileMB} MB.`);
+        else if (st.files.length >= App.settings.maxFiles) errs.push(`"${f.name}": maximum of ${App.settings.maxFiles} files reached.`);
+        else if (st.files.some(x => x.name === f.name && x.size === f.size)) errs.push(`"${f.name}" is already selected.`);
+        else st.files.push(f);
+      });
+      err.textContent = errs.join(' ');
+      draw();
+    }
+    input.addEventListener('change', () => { add(input.files); input.value = ''; });
+    list.addEventListener('click', e => { const b = e.target.closest('[data-rm]'); if (b) { st.files.splice(+b.dataset.rm, 1); draw(); } });
+    ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+    ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+    drop.addEventListener('drop', e => add(e.dataTransfer.files));
+    hint();
+    return { files: () => st.files.slice(), clear() { st.files = []; err.textContent = ''; draw(); }, hint };
+  }
+
+  /* ================= shared request draft (form + CSV import) ================= */
+  function defaultStatus() { return active('status').find(s => s.kind === 'new') || active('status')[0] || App.data.master.status[0]; }
+  function defaultPriority() {
+    const p = App.data.byId.priority[App.settings.defaultPriorityId];
+    return p && p.active !== false ? p : (active('priority')[0] || App.data.master.priority[0]);
+  }
+  function buildDraft(o) {
+    const st = defaultStatus(), pr = o.pr || defaultPriority();
+    if (!st || !pr) throw new Error('Status/Priority master data is empty. Add values in Master Data Management.');
+    return {
+      subject: o.subject, systemId: o.sys.id, systemName: o.sys.name, applicationId: o.app.id, applicationName: o.app.name,
+      categoryId: o.cat.id, categoryName: o.cat.name, detail: o.detail, requester: o.emp.name, requesterId: o.emp.id, requesterEmployeeId: o.emp.employeeId || '', requesterDivision: o.emp.division || '',
+      statusId: st.id, status: st.name, priorityId: pr.id, priority: pr.name, assignedTo: '', supportTeam: '',
+      resolvedAt: null, closedAt: null, resolutionSummary: '', resolutionType: ''
+    };
+  }
+
+  /* ================= Create Issue ================= */
+  const Create = (function () {
+    let picker;
+    const f = {};
+    const KEYS = ['subject', 'employee', 'system', 'application', 'category', 'detail'];
+    function fields() { KEYS.concat(['division']).forEach(k => { f[k] = $('#f-' + k); }); }
+    function fillEmployees() {
+      const cur = f.employee.value, list = active('employee');
+      f.employee.innerHTML = opts(list, cur, list.length ? '-- Select requester --' : 'No employees - add in Master Data', e => e.employeeId ? `${e.employeeId} - ${e.name}` : e.name);
+      if (!list.some(e => e.id === cur)) f.employee.value = '';
+      showDivision();
+    }
+    function showDivision() { const e = App.data.byId.employee[f.employee.value]; f.division.value = e ? e.division : ''; }
+    function fillSystems() {
+      const cur = f.system.value;
+      f.system.innerHTML = opts(active('system'), cur, '-- Select system --');
+      if (!active('system').some(s => s.id === cur)) f.system.value = '';
+      fillApps(true);
+      const cc = f.category.value;
+      f.category.innerHTML = opts(active('category'), cc, '-- Select category --');
+      if (!active('category').some(s => s.id === cc)) f.category.value = '';
+    }
+    function fillApps(keep) {
+      const sys = f.system.value;
+      const cur = keep ? f.application.value : '';
+      const list = active('application').filter(a => a.systemId === sys);
+      f.application.innerHTML = opts(list, cur, sys ? (list.length ? '-- Select application --' : 'No applications for this system') : 'Select a system first');
+      if (!list.some(a => a.id === cur)) f.application.value = '';
+      f.application.disabled = !sys || !list.length;
+    }
+    function setErr(k, msg) {
+      const fld = f[k].closest('.field'); fld.classList.toggle('invalid', !!msg);
+      $('#e-' + k).textContent = msg || ''; f[k].setAttribute('aria-invalid', msg ? 'true' : 'false');
+    }
+    function validate() {
+      let first = null;
+      const chk = (k, ok, msg) => { setErr(k, ok ? '' : msg); if (!ok && !first) first = f[k]; };
+      chk('subject', f.subject.value.trim().length > 0, 'Subject is required.');
+      chk('employee', !!f.employee.value, 'Please select a Requester Name.');
+      chk('system', !!f.system.value, 'Please select a System.');
+      chk('application', !!f.application.value, 'Please select an Application.');
+      chk('category', !!f.category.value, 'Please select a Category.');
+      chk('detail', f.detail.value.trim().length > 0, 'Detail is required.');
+      if (first) first.focus();
+      return !first;
+    }
+    const dirty = () => f.subject.value || f.employee.value || f.system.value || f.category.value || f.detail.value || picker.files().length;
+    function clear() {
+      $('#issueForm').reset(); fillEmployees(); fillSystems(); picker.clear();
+      KEYS.forEach(k => setErr(k, ''));
+    }
+    async function submit(e) {
+      e.preventDefault();
+      if (!validate()) return;
+      const btn = $('#btnSubmit'); btn.disabled = true; btn.textContent = 'Saving...';
+      try {
+        const D = App.data;
+        const sys = D.byId.system[f.system.value], app = D.byId.application[f.application.value], cat = D.byId.category[f.category.value];
+        if (!sys || !app || !cat || app.systemId !== sys.id) throw new Error('Selected master data is no longer valid. Please reselect.');
+        const emp = D.byId.employee[f.employee.value];
+        if (!emp) throw new Error('Selected requester is no longer valid. Please reselect.');
+        const requester = emp.name;
+        const files = picker.files();
+        const draft = buildDraft({ emp, sys, app, cat, subject: f.subject.value.trim(), detail: f.detail.value.trim() });
+        const rec = await Store.createRequest(draft, files, () => [{ type: 'created', actor: requester, visibility: 'public', text: 'Request created.' }]
+          .concat(files.map(x => ({ type: 'attachment', actor: requester, visibility: 'public', text: `Attachment added: ${x.name} (${Util.fmtSize(x.size)})` }))));
+        await loadData();
+        clear();
+        const ok = $('#createSuccess');
+        ok.hidden = false;
+        ok.innerHTML = `Request <strong>${E(rec.id)}</strong> was submitted successfully at ${E(Util.fmtDateTime(rec.createdAt))}. <button type="button" class="btn btn-sm" id="viewNew" data-id="${E(rec.id)}">View request</button>`;
+        toast('Request ' + rec.id + ' submitted', 'ok');
+        window.scrollTo(0, 0);
+      } catch (err) { fail(err, 'Could not save the request'); }
+      finally { btn.disabled = false; btn.textContent = 'Submit Issue'; }
+    }
+    return {
+      init() {
+        fields(); picker = FilePicker($('#createPicker'), 'f');
+        f.system.addEventListener('change', () => fillApps(false));
+        f.employee.addEventListener('change', showDivision);
+        KEYS.forEach(k => f[k].addEventListener('input', () => { if (f[k].closest('.field').classList.contains('invalid')) setErr(k, ''); }));
+        $('#issueForm').addEventListener('submit', submit);
+        $('#btnClear').addEventListener('click', async () => { if (!dirty() || await confirmBox('Clear form', 'Clear all entered information?', 'Clear')) clear(); });
+        $('#btnCancel').addEventListener('click', async () => {
+          if (dirty() && !(await confirmBox('Cancel', 'Discard this issue and leave the form?', 'Discard'))) return;
+          clear(); go('my');
+        });
+        $('#createSuccess').addEventListener('click', e => { const b = e.target.closest('#viewNew'); if (b) openDetail(b.dataset.id, false); });
+        picker.hint();
+      },
+      activate() { fillEmployees(); fillSystems(); picker.hint(); }
+    };
+  })();
+
+  /* ================= CSV import (requests and employees) ================= */
+  const Importer = (function () {
+    const COLS = ['Employee ID', 'Requester Name', 'Division', 'Subject', 'System', 'Application', 'Category', 'Detail', 'Priority', 'Issued Date', 'Resolved Date'];
+    const REQUIRED = ['Subject', 'System', 'Application', 'Category', 'Detail'];
+    const EMP_COLS = ['Employee ID', 'Employee Name', 'Division'];
+    const MAX_ROWS = 500, EMP_MAX_ROWS = 5000, MAX_BYTES = 2 * 1048576;
+    let valid = null; // request rows ready to import, or null
+    let lastRows = [];
+    let empValid = null, empLast = [];
+
+    /* RFC 4180 parser: quotes, doubled quotes, embedded newlines, BOM; auto-detects ; delimiter */
+    function parseCsv(text) {
+      text = text.replace(/^\ufeff/, '');
+      const first = text.split(/\r?\n/)[0] || '';
+      const delim = (first.match(/;/g) || []).length > (first.match(/,/g) || []).length ? ';' : ',';
+      const rows = []; let row = [], cell = '', q = false;
+      for (let i = 0; i < text.length; i++) {
+        const c = text[i];
+        if (q) {
+          if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += c;
+        } else if (c === '"') q = true;
+        else if (c === delim) { row.push(cell); cell = ''; }
+        else if (c === '\n' || c === '\r') { if (c === '\r' && text[i + 1] === '\n') i++; row.push(cell); rows.push(row); row = []; cell = ''; }
+        else cell += c;
+      }
+      if (cell !== '' || row.length) { row.push(cell); rows.push(row); }
+      return rows.filter(r => r.some(x => x.trim() !== ''));
+    }
+
+    const key = s => String(s || '').trim().toLowerCase();
+
+    /* YYYY-MM-DD or DD/MM/YYYY, optional HH:mm; Buddhist years (>= 2400) are converted. Date-only: start of day, or end of day when `endOfDay`. */
+    function parseDate(s, endOfDay) {
+      s = String(s || '').trim();
+      if (!s) return {};
+      let m = /^(\d{4})-(\d{1,2})-(\d{1,2})(?:[ T](\d{1,2}):(\d{2}))?$/.exec(s), y, mo, d, h, mi, hasTime;
+      if (m) { y = +m[1]; mo = +m[2]; d = +m[3]; hasTime = m[4] != null; h = +(m[4] || 0); mi = +(m[5] || 0); }
+      else {
+        m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:[ T](\d{1,2}):(\d{2}))?$/.exec(s);
+        if (!m) return { err: `"${s}" is not a date (use YYYY-MM-DD or DD/MM/YYYY, optional HH:mm)` };
+        d = +m[1]; mo = +m[2]; y = +m[3]; hasTime = m[4] != null; h = +(m[4] || 0); mi = +(m[5] || 0);
+      }
+      if (y >= 2400) y -= 543;
+      if (!hasTime && endOfDay) { h = 23; mi = 59; }
+      const dt = new Date(y, mo - 1, d, h, mi);
+      if (dt.getFullYear() !== y || dt.getMonth() !== mo - 1 || dt.getDate() !== d || h > 23 || mi > 59) return { err: `"${s}" is not a valid date` };
+      return { ms: dt.getTime() };
+    }
+
+    function checkHeader(rows, cols, required, anyOf) {
+      const lower = rows[0].map(h => key(h)), problems = [];
+      required.forEach(c => { if (lower.indexOf(key(c)) < 0) problems.push(`Missing required column "${c}".`); });
+      if (anyOf && !anyOf.some(c => lower.indexOf(key(c)) >= 0)) problems.push(`The file needs the column "${anyOf.join('" or "')}".`);
+      rows[0].forEach(h => { if (!cols.some(c => key(c) === key(h))) problems.push(`Unknown column "${h.trim()}".`); });
+      const idx = {}; cols.forEach(c => { idx[c] = lower.indexOf(key(c)); });
+      return { problems, idx };
+    }
+
+    function validate(rows) {
+      const hd = checkHeader(rows, COLS, REQUIRED, ['Employee ID', 'Requester Name']);
+      if (hd.problems.length) return { fileErrors: hd.problems };
+      const idx = hd.idx, out = [], now = Date.now();
+      const resolvedStatus = active('status').find(s => s.kind === 'resolved');
+      rows.slice(1).forEach((r, n) => {
+        const get = c => idx[c] < 0 ? '' : String(r[idx[c]] == null ? '' : r[idx[c]]).trim();
+        const errs = [], v = { n: n + 2, empId: get('Employee ID'), requester: get('Requester Name'), subject: get('Subject'), system: get('System'), application: get('Application'), category: get('Category'), detail: get('Detail'), priority: get('Priority'), division: get('Division'), issued: get('Issued Date'), resolved: get('Resolved Date') };
+        REQUIRED.forEach(c => { if (!get(c)) errs.push(`${c} is empty`); });
+        if (v.subject.length > 200) errs.push('Subject is longer than 200 characters');
+        if (v.detail.length > 10000) errs.push('Detail is longer than 10000 characters');
+        const sys = active('system').find(s => key(s.name) === key(v.system));
+        if (v.system && !sys) errs.push(`System "${v.system}" not found`);
+        const app = sys && active('application').find(a => a.systemId === sys.id && key(a.name) === key(v.application));
+        if (sys && v.application && !app) errs.push(`Application "${v.application}" not found in system "${sys.name}"`);
+        const cat = active('category').find(c => key(c.name) === key(v.category));
+        if (v.category && !cat) errs.push(`Category "${v.category}" not found`);
+        let emp = null;
+        if (!v.empId && !v.requester) errs.push('Employee ID or Requester Name is required');
+        else if (v.empId) {
+          emp = active('employee').find(e => key(e.employeeId) === key(v.empId));
+          if (!emp) errs.push(`Employee ID "${v.empId}" not found in Employee master`);
+          else {
+            if (v.requester && key(emp.name) !== key(v.requester)) errs.push(`Employee ID "${v.empId}" belongs to "${emp.name}", not "${v.requester}"`);
+            if (v.division && key(emp.division) !== key(v.division)) errs.push(`Employee ID "${v.empId}" is in division "${emp.division}", not "${v.division}"`);
+          }
+        } else {
+          const m = active('employee').filter(e => key(e.name) === key(v.requester) && (!v.division || key(e.division) === key(v.division)));
+          if (!m.length) errs.push(`Requester "${v.requester}"${v.division ? ' in division "' + v.division + '"' : ''} not found in Employee master`);
+          else if (m.length > 1) errs.push(`Requester "${v.requester}" exists in several divisions or IDs; fill Employee ID or Division`);
+          else emp = m[0];
+        }
+        let pr = null;
+        if (v.priority) { pr = active('priority').find(p => key(p.name) === key(v.priority)); if (!pr) errs.push(`Priority "${v.priority}" not found`); }
+        const di = parseDate(v.issued, false), dr = parseDate(v.resolved, true);
+        if (di.err) errs.push('Issued Date: ' + di.err);
+        if (dr.err) errs.push('Resolved Date: ' + dr.err);
+        if (!di.err && !dr.err) {
+          if (dr.ms != null && di.ms == null) errs.push('Resolved Date needs an Issued Date');
+          if (di.ms != null && di.ms > now + 60000) errs.push('Issued Date is in the future');
+          if (dr.ms != null && dr.ms > now + 60000) { if (!v.resolved.match(/\d:\d/)) dr.ms = now; else errs.push('Resolved Date is in the future'); }
+          if (di.ms != null && dr.ms != null && dr.ms < di.ms) errs.push('Resolved Date is before Issued Date');
+          if (dr.ms != null && !resolvedStatus) errs.push('No active status of type Resolved exists in Master Data');
+        }
+        v.errors = errs;
+        if (!errs.length) {
+          v.draft = buildDraft({ emp, sys, app, cat, pr, subject: v.subject, detail: v.detail });
+          if (di.ms != null) { v.draft.createdAt = new Date(di.ms).toISOString(); v.draft.updatedAt = v.draft.createdAt; }
+          if (dr.ms != null) {
+            v.draft.statusId = resolvedStatus.id; v.draft.status = resolvedStatus.name;
+            v.draft.resolvedAt = new Date(dr.ms).toISOString(); v.draft.updatedAt = v.draft.resolvedAt;
+          }
+        }
+        out.push(v);
+      });
+      return { rows: out };
+    }
+
+    function templateCsv() {
+      const emp = active('employee')[0], sys = active('system').find(s => active('application').some(a => a.systemId === s.id)) || active('system')[0];
+      const app = sys && active('application').find(a => a.systemId === sys.id), cat = active('category')[0], pr = defaultPriority();
+      return Util.toCsv([COLS, [emp ? emp.employeeId || '' : '', emp ? emp.name : '', '', 'Example: cannot save purchase requisition', sys ? sys.name : '', app ? app.name : '', cat ? cat.name : '', 'Describe the issue, error message and business impact.', pr ? pr.name : '', '2026-01-15 09:30', '2026-01-17 16:00']]);
+    }
+    function referenceCsv() {
+      const rows = [['Employee ID', 'Requester Name', 'Division', 'System', 'Application', 'Category', 'Priority']];
+      const emps = active('employee'), apps = active('application'), n = Math.max(emps.length, apps.length, active('category').length, active('priority').length, 1);
+      for (let i = 0; i < n; i++) {
+        const e = emps[i], a = apps[i], s = a && App.data.byId.system[a.systemId];
+        rows.push([e ? e.employeeId || '' : '', e ? e.name : '', e ? e.division : '', s ? s.name : '', a ? a.name : '', (active('category')[i] || {}).name || '', (active('priority')[i] || {}).name || '']);
+      }
+      active('system').filter(s => !apps.some(a => a.systemId === s.id)).forEach(s => rows.push(['', '', '', s.name, '(no applications)', '', '']));
+      return Util.toCsv(rows);
+    }
+
+    function show(title, body) { return openDlg(title, body, true); }
+    const alertBox = (cls, html) => `<div class="alert alert-${cls}" role="${cls === 'error' ? 'alert' : 'status'}">${html}</div>`;
+
+    function intro() {
+      return `<p>Fill the template, then choose the file. Values must match Master Data (case is ignored). <strong>If any row is invalid, nothing is imported.</strong> Attachments cannot be imported.</p>
+        <ul class="hint" style="margin:0 0 12px 18px"><li>Identify the requester by <b>Employee ID</b> or by Requester Name (add Division if the name is shared).</li>
+        <li><b>Issued Date</b> (optional, default = now) and <b>Resolved Date</b> (optional): <code>YYYY-MM-DD</code> or <code>DD/MM/YYYY</code>, optional <code>HH:mm</code>; Buddhist years are accepted. A row with a Resolved Date is saved with status Resolved.</li></ul>
+        <div class="actions" style="margin:0 0 14px"><button type="button" class="btn" id="imp-tpl">Download template</button><button type="button" class="btn" id="imp-ref">Download reference lists</button></div>
+        <div class="field"><label for="imp-file">CSV file</label><input type="file" id="imp-file" accept=".csv,text/csv"></div><div id="imp-out"></div>`;
+    }
+
+    function preview(rows) {
+      const bad = rows.filter(r => r.errors.length);
+      const lines = rows.map(r => `<tr><td>${r.n}</td><td>${E(r.empId || r.requester)}</td><td>${E(r.subject)}</td><td>${E(r.system)} / ${E(r.application)}</td><td>${E(r.category)}</td><td>${E(r.issued)}</td><td>${E(r.resolved)}</td><td>${r.errors.length ? '<span class="badge kind-rejected">Error</span> ' + E(r.errors.join('; ')) : '<span class="badge kind-resolved">OK</span>'}</td></tr>`).join('');
+      $('#imp-out').innerHTML = (bad.length
+        ? alertBox('error', `${bad.length} of ${rows.length} row(s) have errors. Nothing was imported. Fix the file and choose it again. <button type="button" class="btn btn-sm" id="imp-err">Download error report</button>`)
+        : alertBox('success', `${rows.length} row(s) are valid. <button type="button" class="btn btn-sm btn-primary" id="imp-go">Import ${rows.length} request(s)</button>`)) +
+        `<div class="table-wrap"><table class="data" style="min-width:860px"><thead><tr><th>Row</th><th>Requester</th><th>Subject</th><th>System / Application</th><th>Category</th><th>Issued</th><th>Resolved</th><th>Result</th></tr></thead><tbody>${lines}</tbody></table></div>`;
+      valid = bad.length ? null : rows;
+      lastRows = rows;
+    }
+
+    async function readCsv(file, maxRows, out) {
+      if (!file) return null;
+      if (file.size > MAX_BYTES) { out.innerHTML = alertBox('error', `File is larger than ${Util.fmtSize(MAX_BYTES)}.`); return null; }
+      let rows;
+      try { rows = parseCsv(await file.text()); } catch (e) { out.innerHTML = alertBox('error', 'The file could not be read.'); return null; }
+      if (rows.length < 2) { out.innerHTML = alertBox('error', 'The file has no data rows.'); return null; }
+      if (rows.length - 1 > maxRows) { out.innerHTML = alertBox('error', `The file has ${rows.length - 1} rows; the limit is ${maxRows}.`); return null; }
+      return rows;
+    }
+
+    async function onFile(file) {
+      const out = $('#imp-out'); valid = null;
+      const rows = await readCsv(file, MAX_ROWS, out); if (!rows) return;
+      const res = validate(rows);
+      if (res.fileErrors) { out.innerHTML = alertBox('error', res.fileErrors.map(E).join('<br>') + '<br>Nothing was imported. Download the template for the expected columns.'); return; }
+      preview(res.rows);
+    }
+
+    async function doImport() {
+      if (!valid) return;
+      const btn = $('#imp-go'); btn.disabled = true; btn.textContent = 'Importing...';
+      try {
+        const recs = await Store.createRequests(valid.map(r => r.draft), r => {
+          const a = [{ type: 'created', actor: r.requester, visibility: 'public', text: 'Request created (imported from CSV).' }];
+          if (r.resolvedAt) a.push({ type: 'resolution', actor: r.requester, visibility: 'public', at: r.resolvedAt, text: `Request resolved (imported from CSV). Status: ${r.status}.` });
+          return a;
+        });
+        await loadData(); closeDlg(); valid = null;
+        const ok = $('#createSuccess'); ok.hidden = false;
+        ok.textContent = `${recs.length} request(s) imported: ${recs[0].id}${recs.length > 1 ? ' to ' + recs[recs.length - 1].id : ''}.`;
+        toast(`${recs.length} request(s) imported`, 'ok'); window.scrollTo(0, 0);
+      } catch (e) { btn.disabled = false; btn.textContent = 'Import'; fail(e, 'Import failed, nothing was saved'); }
+    }
+
+    /* ---------- employees ---------- */
+    function empTemplateCsv() {
+      return Util.toCsv([EMP_COLS, ['E001', 'Sample Employee', 'Procurement Division']]);
+    }
+
+    function empValidate(rows) {
+      const hd = checkHeader(rows, EMP_COLS, EMP_COLS);
+      if (hd.problems.length) return { fileErrors: hd.problems };
+      const idx = hd.idx, all = App.data.master.employee, seen = new Map(), out = [];
+      rows.slice(1).forEach((r, n) => {
+        const get = c => String(r[idx[c]] == null ? '' : r[idx[c]]).trim();
+        const v = { n: n + 2, id: get('Employee ID'), name: get('Employee Name'), division: get('Division'), errors: [] };
+        if (!v.id) v.errors.push('Employee ID is empty'); else if (v.id.length > 40) v.errors.push('Employee ID is longer than 40 characters');
+        if (!v.name) v.errors.push('Employee Name is empty'); else if (v.name.length > 120) v.errors.push('Employee Name is longer than 120 characters');
+        if (!v.division) v.errors.push('Division is empty'); else if (v.division.length > 120) v.errors.push('Division is longer than 120 characters');
+        if (v.id) {
+          if (seen.has(key(v.id))) v.errors.push(`Employee ID "${v.id}" is repeated (also row ${seen.get(key(v.id))})`); else seen.set(key(v.id), v.n);
+        }
+        if (!v.errors.length) {
+          const byId = all.find(e => key(e.employeeId) === key(v.id));
+          const legacy = !byId && all.find(e => !e.employeeId && key(e.name) === key(v.name) && key(e.division) === key(v.division));
+          v.target = byId || legacy || null; v.action = v.target ? 'Update' : 'Add';
+        }
+        out.push(v);
+      });
+      return { rows: out };
+    }
+
+    function empPreview(rows) {
+      const bad = rows.filter(r => r.errors.length), adds = rows.filter(r => r.action === 'Add').length, ups = rows.filter(r => r.action === 'Update').length;
+      const lines = rows.map(r => `<tr><td>${r.n}</td><td>${E(r.id)}</td><td>${E(r.name)}</td><td>${E(r.division)}</td><td>${r.errors.length ? '<span class="badge kind-rejected">Error</span> ' + E(r.errors.join('; ')) : `<span class="badge ${r.action === 'Add' ? 'kind-resolved' : 'kind-progress'}">${r.action}</span>`}</td></tr>`).join('');
+      $('#emp-out').innerHTML = (bad.length
+        ? alertBox('error', `${bad.length} of ${rows.length} row(s) have errors. Nothing was imported. <button type="button" class="btn btn-sm" id="emp-err">Download error report</button>`)
+        : alertBox('success', `${adds} to add, ${ups} to update. <button type="button" class="btn btn-sm btn-primary" id="emp-go">Import ${rows.length} employee(s)</button>`)) +
+        `<div class="table-wrap"><table class="data" style="min-width:560px"><thead><tr><th>Row</th><th>Employee ID</th><th>Name</th><th>Division</th><th>Result</th></tr></thead><tbody>${lines}</tbody></table></div>`;
+      empValid = bad.length ? null : rows; empLast = rows;
+    }
+
+    async function onEmpFile(file) {
+      const out = $('#emp-out'); empValid = null;
+      const rows = await readCsv(file, EMP_MAX_ROWS, out); if (!rows) return;
+      const res = empValidate(rows);
+      if (res.fileErrors) { out.innerHTML = alertBox('error', res.fileErrors.map(E).join('<br>') + '<br>Nothing was imported. Download the template for the expected columns.'); return; }
+      empPreview(res.rows);
+    }
+
+    async function doEmpImport() {
+      if (!empValid) return;
+      const btn = $('#emp-go'); btn.disabled = true; btn.textContent = 'Importing...';
+      let order = App.data.master.employee.reduce((a, x) => Math.max(a, x.order || 0), 0);
+      const recs = empValid.map(r => {
+        if (r.target) return Object.assign({}, r.target, { employeeId: r.id, name: r.name, division: r.division });
+        const id = Util.uid('emp');
+        return { uid: 'employee:' + id, type: 'employee', id, name: r.name, division: r.division, employeeId: r.id, active: true, order: ++order };
+      });
+      try {
+        await Store.putMasterBatch(recs); await loadData(); closeDlg(); empValid = null;
+        toast(`${recs.length} employee(s) imported`, 'ok'); if (App.page === 'master') pages.master.activate();
+      } catch (e) { btn.disabled = false; btn.textContent = 'Import'; fail(e, 'Import failed, nothing was saved'); }
+    }
+
+    function openEmployees() {
+      empValid = null;
+      show('Import employees from CSV', `<p>Columns: <b>Employee ID</b>, <b>Employee Name</b>, <b>Division</b> (all required). New Employee IDs are added; existing IDs are updated (name and division). Employees with no ID but the same name and division get the ID. <strong>If any row is invalid, nothing is imported.</strong></p>
+        <div class="actions" style="margin:0 0 14px"><button type="button" class="btn" id="emp-tpl">Download template</button></div>
+        <div class="field"><label for="emp-file">CSV file</label><input type="file" id="emp-file" accept=".csv,text/csv"></div><div id="emp-out"></div>`);
+    }
+
+    return {
+      init() {
+        $('#btnImport').addEventListener('click', () => { valid = null; show('Import requests from CSV', intro()); });
+        document.addEventListener('click', e => {
+          const id = e.target.id, dl = (n, t) => Util.download(`${n}-${Util.stamp()}.csv`, t, 'text/csv;charset=utf-8');
+          if (id === 'imp-tpl') dl('psi-import-template', templateCsv());
+          else if (id === 'imp-ref') dl('psi-import-reference', referenceCsv());
+          else if (id === 'imp-go') doImport();
+          else if (id === 'imp-err') dl('psi-import-errors', Util.toCsv([['Row', 'Employee / Requester', 'Subject', 'Errors']].concat(lastRows.filter(r => r.errors.length).map(r => [r.n, r.empId || r.requester, r.subject, r.errors.join('; ')]))));
+          else if (id === 'btnEmpImport') openEmployees();
+          else if (id === 'emp-tpl') dl('psi-employee-template', empTemplateCsv());
+          else if (id === 'emp-go') doEmpImport();
+          else if (id === 'emp-err') dl('psi-employee-errors', Util.toCsv([['Row', 'Employee ID', 'Employee Name', 'Errors']].concat(empLast.filter(r => r.errors.length).map(r => [r.n, r.id, r.name, r.errors.join('; ')]))));
+        });
+        document.addEventListener('change', e => {
+          if (e.target.id === 'imp-file') onFile(e.target.files[0]);
+          else if (e.target.id === 'emp-file') onEmpFile(e.target.files[0]);
+        });
+      },
+      parseCsv, validate, templateCsv, parseDate
+    };
+  })();
+
+  /* ================= tracking tables ================= */
+  function Tracker(key, admin) {
+    const el = $('#page-' + key);
+    const st = { q: '', systemId: '', applicationId: '', categoryId: '', statusId: '', priorityId: '', from: '', to: '', sort: 'createdAt', dir: 'desc', page: 1, size: App.settings.pageSize };
+    const cols = [
+      ['id', 'Request ID', r => `<button type="button" class="btn btn-ghost btn-sm id" data-view="${E(r.id)}">${E(r.id)}</button>`],
+      ['subject', 'Subject', r => `<div class="subject">${E(r.subject)}</div>`],
+      ['systemName', 'System', r => E(r.systemName)],
+      ['applicationName', 'Application', r => E(r.applicationName)],
+      ['categoryName', 'Category', r => E(r.categoryName)]
+    ];
+    if (admin) { cols.push(['requester', 'Requester', r => E(r.requester)]); cols.push(['requesterDivision', 'Division', r => E(r.requesterDivision || '-')]); }
+    cols.push(['createdAt', 'Submitted Date', r => E(Util.fmtDateTime(r.createdAt))]);
+    if (admin) cols.push(['priority', 'Priority', priorityBadge]);
+    cols.push(['status', 'Status', r => statusBadge(r) + (Report.isOverdue(App.data, r) ? '<br><span class="tag-overdue">OVERDUE</span>' : '')]);
+    if (!admin) cols.push(['priority', 'Priority', priorityBadge]);
+    cols.push(['assignedTo', 'Assigned To', r => E(r.assignedTo || '-')]);
+    cols.push(['updatedAt', 'Last Updated', r => E(Util.fmtDateTime(r.updatedAt))]);
+    cols.push([null, 'Action', r => `<button type="button" class="btn btn-sm ${admin ? 'btn-primary' : ''}" data-view="${E(r.id)}">${admin ? 'Manage' : 'View'}</button>`]);
+
+    el.innerHTML = `
+      ${admin ? '' : '<div class="alert alert-info">This is a local, single-browser application without login. All requests stored in this browser are shown here.</div>'}
+      <div class="card">
+        <div class="toolbar">
+          <div class="wide"><label for="${key}-q">Search (Request ID or Subject)</label><input type="search" id="${key}-q" data-k="q" placeholder="e.g. PSI-2026-00001 or subject text"></div>
+          <div><label for="${key}-systemId">System</label><select id="${key}-systemId" data-k="systemId"></select></div>
+          <div><label for="${key}-applicationId">Application</label><select id="${key}-applicationId" data-k="applicationId"></select></div>
+          <div><label for="${key}-categoryId">Category</label><select id="${key}-categoryId" data-k="categoryId"></select></div>
+          <div><label for="${key}-statusId">Status</label><select id="${key}-statusId" data-k="statusId"></select></div>
+          <div><label for="${key}-priorityId">Priority</label><select id="${key}-priorityId" data-k="priorityId"></select></div>
+          <div><label for="${key}-from">Submitted from</label><input type="date" id="${key}-from" data-k="from"></div>
+          <div><label for="${key}-to">Submitted to</label><input type="date" id="${key}-to" data-k="to"></div>
+          <div class="toolbar-actions"><button type="button" class="btn" data-reset>Reset</button>
+            ${admin ? '<button type="button" class="btn btn-primary" data-export="filtered">Export filtered CSV</button><button type="button" class="btn" data-export="all">Export all CSV</button>' : ''}</div>
+        </div>
+      </div>
+      <div class="table-wrap" id="${key}-tbl"></div>
+      <div class="pager" id="${key}-pager"></div>`;
+
+    function fillSelects() {
+      const M = App.data.master, sel = (k, html) => { const s = $('#' + key + '-' + k); const cur = st[k]; s.innerHTML = html; s.value = cur; if (s.value !== cur) { st[k] = ''; s.value = ''; } };
+      sel('systemId', opts(M.system, st.systemId, 'All systems', nameInact));
+      sel('applicationId', opts(M.application.filter(a => !st.systemId || a.systemId === st.systemId), st.applicationId, 'All applications', nameInact));
+      sel('categoryId', opts(M.category, st.categoryId, 'All categories', nameInact));
+      sel('statusId', opts(M.status, st.statusId, 'All statuses', nameInact));
+      sel('priorityId', opts(M.priority, st.priorityId, 'All priorities', nameInact));
+    }
+    function rows() {
+      const q = st.q.trim().toLowerCase();
+      const from = st.from ? new Date(st.from + 'T00:00:00').getTime() : null, to = st.to ? new Date(st.to + 'T23:59:59.999').getTime() : null;
+      return App.data.requests.filter(r => {
+        if (q && r.id.toLowerCase().indexOf(q) < 0 && r.subject.toLowerCase().indexOf(q) < 0) return false;
+        if (st.systemId && r.systemId !== st.systemId) return false;
+        if (st.applicationId && r.applicationId !== st.applicationId) return false;
+        if (st.categoryId && r.categoryId !== st.categoryId) return false;
+        if (st.statusId && r.statusId !== st.statusId) return false;
+        if (st.priorityId && r.priorityId !== st.priorityId) return false;
+        const t = Date.parse(r.createdAt);
+        if (from != null && t < from) return false;
+        if (to != null && t > to) return false;
+        return true;
+      });
+    }
+    function sorted(list) {
+      const k = st.sort, d = st.dir === 'asc' ? 1 : -1;
+      const val = r => k === 'priority' ? priorityRank(r) : k === 'status' ? statusName(r).toLowerCase() : (r[k] || '').toString().toLowerCase();
+      return list.slice().sort((a, b) => { const x = val(a), y = val(b); return (x < y ? -1 : x > y ? 1 : 0) * d || (a.id < b.id ? 1 : -1); });
+    }
+    function draw() {
+      const all = sorted(rows());
+      const pages_ = Math.max(1, Math.ceil(all.length / st.size));
+      if (st.page > pages_) st.page = pages_;
+      const slice = all.slice((st.page - 1) * st.size, st.page * st.size);
+      const head = cols.map(c => c[0] ? `<th scope="col" aria-sort="${st.sort === c[0] ? (st.dir === 'asc' ? 'ascending' : 'descending') : 'none'}"><button type="button" data-sort="${c[0]}">${E(c[1])}</button></th>` : `<th scope="col">${E(c[1])}</th>`).join('');
+      const body = slice.length ? slice.map(r => `<tr>${cols.map(c => `<td>${c[2](r)}</td>`).join('')}</tr>`).join('')
+        : `<tr><td colspan="${cols.length}"><div class="empty">${App.data.requests.length ? 'No requests match the current filters.' : 'No requests yet. Use "Create Issue" to submit the first one.'}</div></td></tr>`;
+      $('#' + key + '-tbl').innerHTML = `<table class="data"><caption class="sr" style="position:absolute;left:-9999px">${admin ? 'All requests' : 'Requests'}</caption><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
+      const a = all.length ? (st.page - 1) * st.size + 1 : 0, b = Math.min(all.length, st.page * st.size);
+      $('#' + key + '-pager').innerHTML = `<div>Showing ${a}-${b} of ${all.length} request(s)${all.length !== App.data.requests.length ? ` (filtered from ${App.data.requests.length})` : ''}</div>
+        <div class="pg"><label for="${key}-size" style="margin:0">Rows</label><select id="${key}-size" data-size>${[10, 25, 50, 100].map(n => `<option${n === st.size ? ' selected' : ''}>${n}</option>`).join('')}</select>
+        <button type="button" class="btn btn-sm" data-pg="-1" ${st.page <= 1 ? 'disabled' : ''}>Previous</button>
+        <span>Page ${st.page} / ${pages_}</span>
+        <button type="button" class="btn btn-sm" data-pg="1" ${st.page >= pages_ ? 'disabled' : ''}>Next</button></div>`;
+    }
+    function exportCsv(which) {
+      const list = sorted(which === 'all' ? App.data.requests : rows());
+      const head = ['Request ID', 'Subject', 'System', 'Application', 'Category', 'Employee ID', 'Requester', 'Division', 'Submitted Date', 'Priority', 'Status', 'Assigned To', 'Support Team', 'Last Updated', 'Resolution Date', 'Resolution Type', 'Resolution Summary', 'Detail', 'Attachments'];
+      const data = list.map(r => [r.id, r.subject, r.systemName, r.applicationName, r.categoryName, r.requesterEmployeeId || '', r.requester, r.requesterDivision || '', Util.fmtDateTime(r.createdAt), priorityName(r), statusName(r), r.assignedTo || '', r.supportTeam || '', Util.fmtDateTime(r.updatedAt), Util.fmtDateTime(r.resolvedAt), r.resolutionType || '', r.resolutionSummary || '', r.detail, (r.attachments || []).map(a => a.name).join('; ')]);
+      Util.download(`psi-requests-${which}-${Util.stamp()}.csv`, Util.toCsv([head].concat(data)), 'text/csv;charset=utf-8');
+      toast(`Exported ${data.length} request(s) to CSV (see your browser's downloads).`, 'ok');
+    }
+    el.addEventListener('input', e => { const k = e.target.dataset.k; if (k === 'q') { st.q = e.target.value; st.page = 1; draw(); } });
+    el.addEventListener('change', e => {
+      const t = e.target;
+      if (t.dataset.size !== undefined) { st.size = +t.value; st.page = 1; draw(); return; }
+      const k = t.dataset.k; if (!k || k === 'q') return;
+      st[k] = t.value; st.page = 1;
+      if (k === 'systemId') { st.applicationId = ''; fillSelects(); }
+      draw();
+    });
+    el.addEventListener('click', e => {
+      const t = e.target.closest('button'); if (!t) return;
+      if (t.dataset.view) openDetail(t.dataset.view, admin);
+      else if (t.dataset.sort) { if (st.sort === t.dataset.sort) st.dir = st.dir === 'asc' ? 'desc' : 'asc'; else { st.sort = t.dataset.sort; st.dir = 'asc'; } draw(); const nb = $(`#${key}-tbl [data-sort="${t.dataset.sort}"]`); if (nb) nb.focus(); }
+      else if (t.dataset.pg) { st.page += +t.dataset.pg; draw(); }
+      else if (t.dataset.export) exportCsv(t.dataset.export);
+      else if (t.hasAttribute('data-reset')) { Object.assign(st, { q: '', systemId: '', applicationId: '', categoryId: '', statusId: '', priorityId: '', from: '', to: '', page: 1 }); $$('[data-k]', el).forEach(i => { i.value = ''; }); fillSelects(); draw(); }
+    });
+    return { activate() { fillSelects(); draw(); } };
+  }
+
+  /* ================= request detail / management ================= */
+  let cur = null; // { id, admin, picker }
+  async function openAttachment(id, mode) {
+    try {
+      const a = await Store.getAttachment(id);
+      if (!a) throw new Error('Attachment content was not found in local storage.');
+      if (mode === 'view') {
+        const safe = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif', pdf: 'application/pdf', txt: 'text/plain' };
+        const type = safe[(a.name.split('.').pop() || '').toLowerCase()];
+        if (type) { window.open(URL.createObjectURL(new Blob([a.blob], { type })), '_blank'); return; }
+      }
+      Util.downloadBlob(a.name, a.blob);
+    } catch (e) { fail(e, 'Attachment'); }
+  }
+
+  async function openDetail(id, admin) {
+    const r = reqById(id);
+    if (!r) { toast('Request not found.', 'err'); return; }
+    let acts;
+    try { acts = await Store.getActivity(id); } catch (e) { return fail(e, 'Could not load history'); }
+    const D = App.data, s = D.byId.status[r.statusId];
+    const canView = n => /\.(png|jpe?g|gif|pdf|txt)$/i.test(n);
+    const vis = admin ? acts : acts.filter(a => a.visibility !== 'internal');
+    const kv = [
+      ['Request ID', r.id], ['Status', null, statusBadge(r) + (Report.isOverdue(D, r) ? ' <span class="tag-overdue">OVERDUE</span>' : '')], ['Priority', null, priorityBadge(r)],
+      ['System', r.systemName], ['Application', r.applicationName], ['Category', r.categoryName],
+      ['Requester', (r.requesterEmployeeId ? r.requesterEmployeeId + ' - ' : '') + r.requester], ['Division', r.requesterDivision || '-'], ['Submitted', Util.fmtDateTime(r.createdAt)], ['Last updated', Util.fmtDateTime(r.updatedAt)],
+      ['Assigned to', r.assignedTo || '-'], ['Support team', r.supportTeam || '-'], ['Resolution date', Util.fmtDateTime(r.resolvedAt) || '-']
+    ].map(x => `<div><dt>${E(x[0])}</dt><dd>${x[2] != null ? x[2] : E(x[1])}</dd></div>`).join('');
+    const atts = (r.attachments || []).length ? `<ul class="att-list">${r.attachments.map(a => `<li><span>${E(a.name)} <span class="hint">(${Util.fmtSize(a.size)})</span></span><span class="row-actions">${canView(a.name) ? `<button type="button" class="btn btn-sm" data-att="${E(a.id)}" data-mode="view">View</button>` : ''}<button type="button" class="btn btn-sm" data-att="${E(a.id)}" data-mode="dl">Download</button></span></li>`).join('')}</ul>` : '<div class="hint">No attachments.</div>';
+    const hist = vis.length ? `<ul class="timeline">${vis.slice().reverse().map(a => `<li class="${a.visibility === 'internal' ? 'internal' : ''}"><div class="meta">${E(Util.fmtDateTime(a.at))} &middot; ${E(a.actor || '')} &middot; ${E(ACT_LABEL[a.type] || a.type)}${a.visibility === 'internal' ? ' &middot; <strong>Internal</strong>' : a.type === 'comment' ? (admin ? ' &middot; User-visible' : '') : ''}</div><div class="txt">${E(a.text || '')}</div></li>`).join('')}</ul>` : '<div class="hint">No history.</div>';
+
+    let manage;
+    if (admin) {
+      manage = `<h3 class="sec">Manage request</h3>
+      <form id="mgForm" novalidate>
+        <div class="grid-3">
+          <div class="field"><label for="m-status">Status</label><select id="m-status">${opts(withCurrent('status', r.statusId), r.statusId, null, nameInact)}</select></div>
+          <div class="field"><label for="m-priority">Priority</label><select id="m-priority">${opts(withCurrent('priority', r.priorityId), r.priorityId, null, nameInact)}</select></div>
+          <div class="field"><label for="m-assigned">Assigned to (support person)</label><input id="m-assigned" type="text" list="m-assignees" maxlength="80" value="${E(r.assignedTo || '')}" autocomplete="off"><datalist id="m-assignees">${active('assignee').map(a => `<option value="${E(a.name)}">`).join('')}</datalist></div>
+          <div class="field"><label for="m-team">Support team</label><select id="m-team"><option value="">-- None --</option>${active('team').map(t => `<option${t.name === r.supportTeam ? ' selected' : ''}>${E(t.name)}</option>`).join('')}${r.supportTeam && !active('team').some(t => t.name === r.supportTeam) ? `<option selected>${E(r.supportTeam)}</option>` : ''}</select></div>
+          <div class="field"><label for="m-restype">Resolution type</label><select id="m-restype"><option value="">-- None --</option>${active('restype').map(t => `<option${t.name === r.resolutionType ? ' selected' : ''}>${E(t.name)}</option>`).join('')}${r.resolutionType && !active('restype').some(t => t.name === r.resolutionType) ? `<option selected>${E(r.resolutionType)}</option>` : ''}</select></div>
+        </div>
+        <div class="field"><label for="m-summary">Resolution summary <span class="hint">(required when status is Resolved or Closed)</span></label><textarea id="m-summary" rows="3" maxlength="5000">${E(r.resolutionSummary || '')}</textarea></div>
+        <div class="grid-2">
+          <div class="field"><label for="m-comment">Add comment / response</label><textarea id="m-comment" rows="3" maxlength="5000"></textarea></div>
+          <div class="field"><label for="m-vis">Comment visibility</label><select id="m-vis"><option value="internal">Internal comment (staff only)</option><option value="public">User-visible response</option></select></div>
+        </div>
+        <div class="field"><label>Add attachments</label><div id="mPicker"></div></div>
+        <div class="err" id="m-err" role="alert"></div>
+        <div class="actions"><button type="submit" class="btn btn-primary" id="mSave">Save changes</button></div>
+      </form>`;
+    } else {
+      const kind = s ? s.kind : 'new';
+      const canCancel = App.settings.cancelableKinds.indexOf(kind) >= 0;
+      manage = `<h3 class="sec">Add information</h3>
+      <form id="mgForm" novalidate>
+        <div class="field"><label for="m-comment">Additional information</label><textarea id="m-comment" rows="3" maxlength="5000"></textarea></div>
+        <div class="field"><label>Add attachments</label><div id="mPicker"></div></div>
+        <div class="err" id="m-err" role="alert"></div>
+        <div class="actions"><button type="submit" class="btn btn-primary" id="mSave">Add to request</button>${canCancel ? '<button type="button" class="btn btn-danger" id="mCancelReq">Cancel this request</button>' : ''}</div>
+        ${canCancel ? '' : '<div class="hint">This request can no longer be cancelled in its current status.</div>'}
+      </form>`;
+    }
+
+    openDlg(`${r.id} - ${r.subject}`, `<dl class="kv">${kv}</dl>
+      <h3 class="sec" style="margin-top:0">Detail</h3><div class="detail-text">${E(r.detail)}</div>
+      ${r.resolutionSummary ? `<h3 class="sec">Resolution summary${r.resolutionType ? ' (' + E(r.resolutionType) + ')' : ''}</h3><div class="detail-text">${E(r.resolutionSummary)}</div>` : ''}
+      <h3 class="sec">Attachments</h3>${atts}
+      ${manage}
+      <h3 class="sec">Status history &amp; comments</h3>${hist}`, true);
+    $('#dlg').scrollTop = 0; $('#dlg .dlg-body').scrollTop = 0;
+    cur = { id, admin, picker: FilePicker($('#mPicker'), 'm') };
+  }
+
+  async function saveDetail() {
+    const r = reqById(cur.id), D = App.data, admin = cur.admin;
+    const err = $('#m-err'); err.textContent = '';
+    const actor = (App.settings.requesterName || 'Local User').trim() || 'Local User';
+    const next = Object.assign({}, r), acts = [];
+    const files = cur.picker.files();
+    const comment = $('#m-comment').value.trim();
+    if (admin) {
+      const stNew = D.byId.status[$('#m-status').value], prNew = D.byId.priority[$('#m-priority').value];
+      const assigned = $('#m-assigned').value.trim(), team = $('#m-team').value, rt = $('#m-restype').value, summary = $('#m-summary').value.trim();
+      const kind = stNew ? stNew.kind : 'new';
+      if ((kind === 'resolved' || kind === 'closed') && !summary) { err.textContent = 'A resolution summary is required when the status is Resolved or Closed.'; $('#m-summary').focus(); return; }
+      if (stNew && stNew.id !== r.statusId) {
+        next.statusId = stNew.id; next.status = stNew.name;
+        acts.push({ type: 'status', actor, visibility: 'public', from: statusName(r), to: stNew.name, text: `Status changed from "${statusName(r)}" to "${stNew.name}".` });
+      }
+      if (prNew && prNew.id !== r.priorityId) {
+        next.priorityId = prNew.id; next.priority = prNew.name;
+        acts.push({ type: 'priority', actor, visibility: 'public', from: priorityName(r), to: prNew.name, text: `Priority changed from "${priorityName(r)}" to "${prNew.name}".` });
+      }
+      if (assigned !== (r.assignedTo || '') || team !== (r.supportTeam || '')) {
+        const was = [r.assignedTo, r.supportTeam].filter(Boolean).join(' / ') || 'unassigned';
+        next.assignedTo = assigned; next.supportTeam = team;
+        acts.push({ type: 'assignment', actor, visibility: 'public', text: `Assignment changed from "${was}" to "${[assigned, team].filter(Boolean).join(' / ') || 'unassigned'}".` });
+      }
+      const sumChanged = summary !== (r.resolutionSummary || '') || rt !== (r.resolutionType || '');
+      next.resolutionSummary = summary; next.resolutionType = rt;
+      const statusChanged = next.statusId !== r.statusId;
+      next.resolvedAt = (kind === 'resolved' || kind === 'closed') ? (r.resolvedAt || Util.now()) : null;
+      next.closedAt = (kind === 'closed' || kind === 'rejected') ? (r.closedAt || Util.now()) : null;
+      if (statusChanged && kind === 'resolved') acts.push({ type: 'resolution', actor, visibility: 'public', text: 'Request resolved. ' + summary });
+      else if (statusChanged && (kind === 'closed' || kind === 'rejected')) acts.push({ type: 'closure', actor, visibility: 'public', text: `Request ${kind}. ${summary}`.trim() });
+      else if (sumChanged && summary) acts.push({ type: 'resolution', actor, visibility: 'public', text: 'Resolution details updated. ' + summary });
+      if (statusChanged && !next.resolvedAt && (D.byId.status[r.statusId] || {}).kind && ['resolved', 'closed', 'rejected'].indexOf(D.byId.status[r.statusId].kind) >= 0 && ['resolved', 'closed', 'rejected'].indexOf(kind) < 0)
+        acts.push({ type: 'status', actor, visibility: 'public', text: 'Request re-opened.' });
+      if (comment) acts.push({ type: 'comment', actor, visibility: $('#m-vis').value, text: comment });
+    } else if (comment) acts.push({ type: 'comment', actor, visibility: 'public', text: comment });
+    files.forEach(x => acts.push({ type: 'attachment', actor, visibility: 'public', text: `Attachment added: ${x.name} (${Util.fmtSize(x.size)})` }));
+    if (!acts.length) { err.textContent = admin ? 'No changes to save.' : 'Enter additional information or choose a file first.'; return; }
+    const btn = $('#mSave'); btn.disabled = true;
+    try {
+      await Store.saveRequest(next, acts, files);
+      await loadData();
+      toast('Request updated.', 'ok');
+      await openDetail(cur.id, admin);
+      pages[App.page].activate();
+    } catch (e) { btn.disabled = false; err.textContent = e.message; fail(e, 'Could not save changes'); }
+  }
+
+  async function cancelRequest() {
+    const r = reqById(cur.id), D = App.data;
+    const target = D.byId.status[App.settings.cancelTargetStatusId] || D.master.status.find(s => s.kind === 'rejected');
+    if (!target) return toast('No cancellation target status is configured (Master Data > Settings).', 'err');
+    if (!(await confirmBox('Cancel request', `Cancel ${r.id}? Its status will change to "${target.name}".`, 'Cancel request'))) return;
+    const actor = (App.settings.requesterName || 'Local User').trim() || 'Local User';
+    const next = Object.assign({}, r, { statusId: target.id, status: target.name, closedAt: Util.now(), resolvedAt: target.kind === 'closed' ? (r.resolvedAt || Util.now()) : null });
+    try {
+      await Store.saveRequest(next, [
+        { type: 'status', actor, visibility: 'public', from: statusName(r), to: target.name, text: `Status changed from "${statusName(r)}" to "${target.name}".` },
+        { type: 'closure', actor, visibility: 'public', text: 'Request cancelled by requester.' }], []);
+      await loadData(); toast('Request cancelled.', 'ok');
+      await openDetail(cur.id, false); pages[App.page].activate();
+    } catch (e) { fail(e, 'Could not cancel request'); }
+  }
+
+  /* ================= Master Data ================= */
+  const MASTER_TABS = [['system', 'System'], ['application', 'Application'], ['category', 'Issue Category'], ['employee', 'Employee'], ['status', 'Status'], ['priority', 'Priority'], ['team', 'Support Team'], ['assignee', 'Assigned To'], ['restype', 'Resolution Type'], ['sla', 'SLA Target'], ['settings', 'Settings'], ['backup', 'Backup & Restore']];
+  const Master = (function () {
+    let tab = 'system';
+    const el = () => $('#page-master');
+
+    function tableFor(type) {
+      const M = App.data.master, list = M[type];
+      const sysName = id => (App.data.byId.system[id] || {}).name || '(missing)';
+      let heads, cell;
+      if (type === 'application') { heads = ['System', 'Application']; cell = m => [E(sysName(m.systemId)), E(m.name)]; }
+      else if (type === 'status') { heads = ['Status', 'Type']; cell = m => [`<span class="badge kind-${m.kind}">${E(m.name)}</span>`, E(KINDS[m.kind] || m.kind)]; }
+      else if (type === 'sla') { heads = ['Priority', 'Target (hours)']; cell = m => [E((App.data.byId.priority[m.priorityId] || {}).name || m.name), E(m.hours)]; }
+      else if (type === 'employee') { heads = ['Employee ID', 'Employee name', 'Division']; cell = m => [E(m.employeeId || '-'), E(m.name), E(m.division || '-')]; }
+      else { heads = ['Name']; cell = m => [E(m.name)]; }
+      const usage = m => { // how many requests reference this value (historical records are kept)
+        const R = App.data.requests;
+        const k = { system: 'systemId', application: 'applicationId', category: 'categoryId', status: 'statusId', priority: 'priorityId', employee: 'requesterId' }[type];
+        return k ? R.filter(r => r[k] === m.id).length : null;
+      };
+      const showUse = ['system', 'application', 'category', 'status', 'priority', 'employee'].indexOf(type) >= 0;
+      const rowsHtml = list.length ? list.map((m, i) => `<tr class="${m.active === false ? 'inactive' : ''}">${cell(m).map(c => `<td>${c}</td>`).join('')}${showUse ? `<td>${usage(m)}</td>` : ''}<td>${m.active === false ? '<span class="badge kind-closed">Inactive</span>' : '<span class="badge kind-resolved">Active</span>'}</td>
+        <td><div class="row-actions"><button type="button" class="btn btn-sm" data-edit="${E(m.id)}">Edit</button><button type="button" class="btn btn-sm" data-toggle="${E(m.id)}">${m.active === false ? 'Activate' : 'Deactivate'}</button>
+        ${type !== 'sla' ? `<button type="button" class="btn btn-sm" data-move="-1" data-id="${E(m.id)}" aria-label="Move up" ${i === 0 ? 'disabled' : ''}>&#9650;</button><button type="button" class="btn btn-sm" data-move="1" data-id="${E(m.id)}" aria-label="Move down" ${i === list.length - 1 ? 'disabled' : ''}>&#9660;</button>` : ''}</div></td></tr>`).join('')
+        : `<tr><td colspan="${heads.length + 3}"><div class="empty">No records yet.</div></td></tr>`;
+      return `<div class="actions" style="margin:0 0 10px"><button type="button" class="btn btn-primary" data-add>Add ${E((MASTER_TABS.find(t => t[0] === type) || [])[1])}</button>${type === 'employee' ? '<button type="button" class="btn" id="btnEmpImport">Import from CSV</button>' : ''}</div>
+        <div class="table-wrap" style="margin-top:0"><table class="data" style="min-width:560px"><thead><tr>${heads.map(h => `<th scope="col">${E(h)}</th>`).join('')}${showUse ? '<th scope="col">Requests</th>' : ''}<th scope="col">State</th><th scope="col">Actions</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>
+        <div class="hint" style="margin-top:8px">Deactivating a value hides it from new-request dropdowns. Existing requests keep their stored (historical) names.</div>`;
+    }
+
+    function settingsHtml() {
+      const s = App.settings, M = App.data.master;
+      return `<form id="setForm" class="form-card" novalidate>
+        <div class="field"><label>Requests can be cancelled by the requester while their status type is</label>
+          ${['new', 'progress', 'pending'].map(k => `<label class="inline-check"><input type="checkbox" name="ck" value="${k}"${s.cancelableKinds.indexOf(k) >= 0 ? ' checked' : ''}>${E(KINDS[k])}</label>`).join('')}</div>
+        <div class="grid-3">
+          <div class="field"><label for="s-target">Status applied on cancellation</label><select id="s-target">${opts(active('status'), s.cancelTargetStatusId, null)}</select></div>
+          <div class="field"><label for="s-defpri">Default priority for new requests</label><select id="s-defpri">${opts(active('priority'), s.defaultPriorityId, null)}</select></div>
+          <div class="field"><label for="s-page">Default table page size</label><select id="s-page">${[10, 25, 50, 100].map(n => `<option${n === s.pageSize ? ' selected' : ''}>${n}</option>`).join('')}</select></div>
+          <div class="field"><label for="s-maxmb">Max attachment size (MB)</label><input id="s-maxmb" type="number" min="1" max="50" value="${E(s.maxFileMB)}"></div>
+          <div class="field"><label for="s-maxfiles">Max files per submission</label><input id="s-maxfiles" type="number" min="1" max="50" value="${E(s.maxFiles)}"></div>
+        </div>
+        <div class="field"><label for="s-ext">Allowed attachment extensions (comma separated)</label><input id="s-ext" type="text" value="${E(s.allowedExt)}"><div class="hint">Executable types (exe, bat, js, html, ...) should not be added.</div></div>
+        <div class="err" id="s-err" role="alert"></div>
+        <button type="submit" class="btn btn-primary">Save settings</button></form>`;
+    }
+
+    function backupHtml() {
+      return `<div class="grid-2">
+        <div class="card"><h2>Backup</h2><p>Download all master data, requests, activity history and attachment contents as one versioned JSON file (via your browser's download feature).</p>
+          <button type="button" class="btn btn-primary" id="bk-export">Download backup (JSON)</button></div>
+        <div class="card"><h2>Restore</h2>
+          <div class="field"><label for="bk-file">Backup file (.json)</label><input type="file" id="bk-file" accept=".json,application/json"></div>
+          <div class="field"><label class="inline-check"><input type="radio" name="bk-mode" value="merge" checked>Merge (add missing records; existing IDs are kept)</label><br>
+            <label class="inline-check"><input type="radio" name="bk-mode" value="replace">Replace all existing data</label></div>
+          <button type="button" class="btn btn-primary" id="bk-restore">Restore</button>
+          <div id="bk-result" style="margin-top:10px" role="status"></div></div>
+      </div>
+      <div class="card"><h2>Browser storage</h2><div id="bk-storage" class="hint">Checking...</div>
+        <p class="hint">Data lives in this browser profile's IndexedDB, not in the project folder. Clearing site data, using another browser/profile or another computer will not carry it over - use Backup/Restore for that.</p></div>`;
+    }
+
+    async function render() {
+      el().innerHTML = `<div class="card"><div class="tabs" role="tablist" aria-label="Master data sections">${MASTER_TABS.map(t => `<button type="button" role="tab" id="tab-${t[0]}" aria-selected="${t[0] === tab}" data-tab="${t[0]}">${E(t[1])}</button>`).join('')}</div>
+        <div id="mdBody" role="tabpanel">${tab === 'settings' ? settingsHtml() : tab === 'backup' ? backupHtml() : tableFor(tab)}</div></div>`;
+      if (tab === 'backup') {
+        const est = await Store.estimate();
+        const b = $('#bk-storage');
+        if (b) b.textContent = est && est.usage != null ? `Approximately ${Util.fmtSize(est.usage)} used of ${Util.fmtSize(est.quota)} available to this origin.` : 'Storage usage estimate is not available in this browser.';
+      }
+    }
+
+    function form(type, m) {
+      const nameF = label => `<div class="field"><label for="mf-name">${label}</label><input id="mf-name" type="text" maxlength="120" value="${E(m ? m.name : '')}" autocomplete="off"></div>`;
+      let h = '';
+      if (type === 'application') h = `<div class="field"><label for="mf-sys">System</label><select id="mf-sys">${opts(m ? withCurrent('system', m.systemId) : active('system'), m ? m.systemId : '', '-- Select system --', nameInact)}</select></div>` + nameF('Application name');
+      else if (type === 'status') h = nameF('Status name') + `<div class="field"><label for="mf-kind">Status type</label><select id="mf-kind">${Object.keys(KINDS).map(k => `<option value="${k}"${m && m.kind === k ? ' selected' : ''}>${E(KINDS[k])}</option>`).join('')}</select><div class="hint">Controls open/terminal logic, KPI counting and resolution timestamps.</div></div>`;
+      else if (type === 'sla') {
+        const used = App.data.master.sla.filter(s => !m || s.id !== m.id).map(s => s.priorityId);
+        const list = App.data.master.priority.filter(p => p.active !== false && used.indexOf(p.id) < 0 || (m && p.id === m.priorityId));
+        h = `<div class="field"><label for="mf-pri">Priority</label><select id="mf-pri">${opts(list, m ? m.priorityId : '', '-- Select priority --')}</select></div>
+          <div class="field"><label for="mf-hours">Target resolution time (hours)</label><input id="mf-hours" type="number" min="1" step="1" value="${m ? E(m.hours) : ''}"></div>`;
+      } else if (type === 'employee') {
+        const divs = Array.from(new Set(App.data.master.employee.map(x => x.division).filter(Boolean)));
+        h = `<div class="field"><label for="mf-empid">Employee ID</label><input id="mf-empid" type="text" maxlength="40" value="${E(m ? m.employeeId || '' : '')}" autocomplete="off"></div>` + nameF('Employee name') + `<div class="field"><label for="mf-div">Division</label><input id="mf-div" type="text" list="mf-divs" maxlength="120" value="${E(m ? m.division || '' : '')}" autocomplete="off"><datalist id="mf-divs">${divs.map(d => `<option value="${E(d)}">`).join('')}</datalist></div>`;
+      } else h = nameF(({ system: 'System name', category: 'Category name', priority: 'Priority name', team: 'Support team name', assignee: 'Support person name', restype: 'Resolution type' })[type]);
+      openDlg((m ? 'Edit ' : 'Add ') + (MASTER_TABS.find(t => t[0] === type) || [])[1], `<form id="mdForm" data-type="${type}" data-id="${m ? E(m.id) : ''}" novalidate>${h}<div class="err" id="mf-err" role="alert"></div>
+        <div class="actions end"><button type="button" class="btn" data-close>Cancel</button><button type="submit" class="btn btn-primary">Save</button></div></form>`);
+      const first = $('#mdForm input, #mdForm select'); if (first) first.focus();
+    }
+
+    function dup(type, name, systemId, selfId, division) {
+      const n = name.trim().toLowerCase();
+      return App.data.master[type].some(x => x.id !== selfId && String(x.name).trim().toLowerCase() === n && (type !== 'application' || x.systemId === systemId) &&
+        (type !== 'employee' || String(x.division || '').trim().toLowerCase() === String(division || '').trim().toLowerCase()));
+    }
+
+    async function saveForm(e) {
+      e.preventDefault();
+      const fm = e.target, type = fm.dataset.type, id = fm.dataset.id, err = $('#mf-err');
+      const old = id ? App.data.byId[type][id] : null;
+      const rec = old ? Object.assign({}, old) : { type, id: Util.uid(type.slice(0, 3)), active: true, order: App.data.master[type].reduce((a, x) => Math.max(a, x.order || 0), 0) + 1 };
+      rec.uid = type + ':' + rec.id;
+      const v = s => { const n = $(s, fm); return n ? n.value : ''; };
+      if (type === 'sla') {
+        const pri = App.data.byId.priority[v('#mf-pri')], hrs = Number(v('#mf-hours'));
+        if (!pri) return void (err.textContent = 'Select a priority.');
+        if (!(hrs > 0)) return void (err.textContent = 'Enter a target greater than 0 hours.');
+        if (App.data.master.sla.some(s => s.id !== rec.id && s.priorityId === pri.id)) return void (err.textContent = 'An SLA target already exists for this priority.');
+        Object.assign(rec, { priorityId: pri.id, name: pri.name, hours: hrs });
+      } else {
+        const name = v('#mf-name').trim();
+        if (!name) return void (err.textContent = 'Name is required.');
+        if (type === 'application') {
+          if (!v('#mf-sys')) return void (err.textContent = 'Select a system.');
+          rec.systemId = v('#mf-sys');
+        }
+        if (type === 'employee') {
+          rec.division = v('#mf-div').trim();
+          if (!rec.division) return void (err.textContent = 'Division is required.');
+          rec.employeeId = v('#mf-empid').trim();
+          if (!rec.employeeId) return void (err.textContent = 'Employee ID is required.');
+          if (App.data.master.employee.some(x => x.id !== rec.id && String(x.employeeId || '').trim().toLowerCase() === rec.employeeId.toLowerCase())) return void (err.textContent = 'This Employee ID already exists.');
+        }
+        if (type !== 'employee' && dup(type, name, rec.systemId, rec.id, rec.division)) return void (err.textContent = type === 'application' ? 'This application already exists in the selected system.' : 'This name already exists.');
+        if (type === 'employee' && dup(type, name, rec.systemId, rec.id, rec.division) && !rec.employeeId) return void (err.textContent = 'This employee already exists in that division.');
+        rec.name = name;
+        if (type === 'status') rec.kind = v('#mf-kind');
+      }
+      try { await Store.putMaster(rec); await loadData(); closeDlg(); toast('Saved.', 'ok'); render(); }
+      catch (ex) { err.textContent = ex.message; }
+    }
+
+    async function restore() {
+      const file = $('#bk-file').files[0], out = $('#bk-result');
+      out.innerHTML = '';
+      if (!file) return void (out.innerHTML = '<div class="alert alert-error">Choose a backup file first.</div>');
+      let obj;
+      try { obj = JSON.parse(await file.text()); } catch (e) { return void (out.innerHTML = '<div class="alert alert-error">The file is not valid JSON.</div>'); }
+      const errs = Store.validateBackup(obj);
+      if (errs.length) return void (out.innerHTML = `<div class="alert alert-error">${E(errs.join(' '))}</div>`);
+      const mode = $('input[name=bk-mode]:checked').value;
+      const msg = `Backup from ${Util.fmtDateTime(obj.exportedAt)}: ${obj.requests.length} request(s), ${obj.attachments.length} attachment(s), ${obj.master.length} master record(s).` +
+        (mode === 'replace' ? ' ALL current data in this browser will be permanently replaced.' : ' Missing records will be added; records with existing IDs are kept as they are.');
+      if (!(await confirmBox(mode === 'replace' ? 'Replace all data?' : 'Merge backup?', msg, mode === 'replace' ? 'Replace data' : 'Merge'))) return;
+      try {
+        const s = await Store.importBackup(obj, mode);
+        await loadData();
+        out.innerHTML = `<div class="alert alert-success">Restore complete: ${s.requestsAdded} request(s) added, ${s.requestsSkipped} skipped (ID exists), ${s.attachmentsAdded} attachment(s), ${s.activityAdded} activity entries, ${s.masterAdded} master records.${s.warnings.length ? '<br>Warnings:<br>' + s.warnings.map(E).join('<br>') : ''}</div>`;
+        toast('Restore complete.', 'ok');
+      } catch (ex) { out.innerHTML = `<div class="alert alert-error">${E(ex.message)}</div>`; }
+    }
+
+    function init() {
+      const root = el();
+      root.addEventListener('click', async e => {
+        const b = e.target.closest('button'); if (!b) return;
+        const D = App.data;
+        if (b.dataset.tab) { tab = b.dataset.tab; render(); $('#tab-' + tab).focus(); }
+        else if (b.hasAttribute('data-add')) form(tab, null);
+        else if (b.dataset.edit) form(tab, D.byId[tab][b.dataset.edit]);
+        else if (b.dataset.toggle) {
+          const m = Object.assign({}, D.byId[tab][b.dataset.toggle]); m.active = m.active === false;
+          if (!m.active && !(await confirmBox('Deactivate', `Deactivate "${m.name}"? Existing requests keep their history.`, 'Deactivate'))) return;
+          try { await Store.putMaster(m); await loadData(); render(); toast(m.active ? 'Activated.' : 'Deactivated.', 'ok'); } catch (ex) { fail(ex); }
+        } else if (b.dataset.move) {
+          const list = D.master[tab], i = list.findIndex(x => x.id === b.dataset.id), j = i + +b.dataset.move;
+          if (j < 0 || j >= list.length) return;
+          const a = Object.assign({}, list[i]), c = Object.assign({}, list[j]);
+          const ords = list.map((x, n) => n + 1); a.order = ords[j]; c.order = ords[i];
+          try { await Promise.all(list.map((x, n) => (n === i ? Store.putMaster(a) : n === j ? Store.putMaster(c) : Store.putMaster(Object.assign({}, x, { order: n + 1 }))))); await loadData(); render(); } catch (ex) { fail(ex); }
+        }
+        else if (b.id === 'bk-export') {
+          b.disabled = true; b.textContent = 'Preparing...';
+          try { const data = await Store.exportAll(); Util.download(`psi-backup-${Util.stamp()}.json`, JSON.stringify(data), 'application/json'); toast('Backup downloaded (check your browser downloads).', 'ok'); }
+          catch (ex) { fail(ex, 'Backup failed'); }
+          b.disabled = false; b.textContent = 'Download backup (JSON)';
+        } else if (b.id === 'bk-restore') restore();
+      });
+      root.addEventListener('submit', e => {
+        if (e.target.id === 'setForm') {
+          e.preventDefault();
+          const s = Object.assign({}, App.settings), err = $('#s-err');
+          s.cancelableKinds = $$('input[name=ck]:checked').map(x => x.value);
+          s.cancelTargetStatusId = $('#s-target').value; s.defaultPriorityId = $('#s-defpri').value; s.pageSize = +$('#s-page').value;
+          s.maxFileMB = Number($('#s-maxmb').value); s.maxFiles = Number($('#s-maxfiles').value);
+          s.allowedExt = $('#s-ext').value.trim();
+          if (!(s.maxFileMB >= 1) || !(s.maxFiles >= 1) || !s.allowedExt) { err.textContent = 'Enter valid attachment limits and at least one extension.'; return; }
+          if (/(^|,)\s*\.?(exe|bat|cmd|com|msi|js|vbs|ps1|html?|svg|scr|jar)\s*(,|$)/i.test(s.allowedExt)) { err.textContent = 'Executable or script file types are not allowed.'; return; }
+          err.textContent = '';
+          if (!Settings.save(s)) return toast('Could not save settings to LocalStorage.', 'err');
+          App.settings = s; toast('Settings saved.', 'ok');
+        }
+      });
+    }
+    return { init, activate: render, saveForm };
+  })();
+
+  /* ================= bootstrap ================= */
+  async function init() {
+    try {
+      await Store.open();
+      await Store.seedIfNeeded();
+      await loadData();
+    } catch (e) {
+      const f = $('#fatal'); f.hidden = false;
+      f.textContent = 'Storage could not be started: ' + e.message + ' Data cannot be saved until this is resolved.';
+      console.error(e); return;
+    }
+    const rn = $('#requesterName'); rn.value = App.settings.requesterName;
+    rn.addEventListener('change', () => { App.settings.requesterName = rn.value.trim() || 'Local User'; rn.value = App.settings.requesterName; if (!Settings.save(App.settings)) toast('Could not save name to LocalStorage.', 'err'); });
+
+    Create.init();
+    Importer.init();
+    pages.create = Create;
+    pages.my = Tracker('my', false);
+    pages.admin = Tracker('admin', true);
+    Report.init($('#page-report'), getData);
+    pages.report = { activate() { Report.render(App.data); } };
+    Master.init();
+    pages.master = Master;
+
+    document.addEventListener('click', e => {
+      if (e.target.closest('[data-close]') && e.target.closest('#dlg')) closeDlg();
+      const a = e.target.closest('[data-att]'); if (a) openAttachment(a.dataset.att, a.dataset.mode);
+      if (e.target.id === 'mCancelReq') cancelRequest();
+    });
+    document.addEventListener('submit', e => {
+      if (e.target.id === 'mgForm') { e.preventDefault(); saveDetail(); }
+      if (e.target.id === 'mdForm') Master.saveForm(e);
+    });
+    $('#dlg').addEventListener('close', () => { cur = null; $('#dlg').innerHTML = ''; });
+    window.addEventListener('hashchange', route);
+    route();
+  }
+
+  window.addEventListener('error', e => { const f = $('#fatal'); if (f && f.hidden && App.data) toast('Unexpected error: ' + e.message, 'err'); });
+  window.PSI = App; // exposed for troubleshooting from the browser console
+  document.addEventListener('DOMContentLoaded', init);
+})();
+
+
+
+</script>
+
+
+</body></html>
